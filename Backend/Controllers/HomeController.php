@@ -1,0 +1,17 @@
+<?php
+
+class HomeController extends Controller
+{
+	protected function getRoutes() : array
+	{
+		return ["/"];
+	}
+
+	public function execute() : void
+	{
+		$layout = new LayoutView();
+		$layout->addChild(new HeadingView("Home"));
+		echo $this->getParam("id");
+		$layout->render();
+	}
+}
