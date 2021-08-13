@@ -1,6 +1,7 @@
 <?php
 
-/* if (isset($_GET["DEBUG"])) {
+// Display errors when debug is set
+/* if (isset($_GET["DEbUG"])) {
     ini_set('display_errors', '1');
     ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
@@ -13,11 +14,13 @@ define("DB_NAME", "name");
 define("DB_USER", "user");
 define("DB_PASS", "pass");
 
-define("TITLE", "Felix");                       // Title for website
-define("DOMAIN", "https://schindlerfelix.de");  // Hosted on this domain
-define("CDN_SUFFIX", "suf");                    // https://cdn.schindlerfelix.de/CDN_SUFFIX/
+define("TITLE", "Sample");                              // Title for website
+define("DOMAIN", "https://sample.schindlerfelix.de");   // Hosted on this domain
+define("CDN_SUFFIX", "sample/");                        // https://cdn.schindlerfelix.de/sample/
 
-require_once("./Backend/Core/ClassLoader.php"); // Load classes
+require_once("./Backend/Core/ClassLoader.php");         // Load classes
+// require_once("./Backend/Libraries/vendor/autoload.php");     // Composer autoloader
 
+// Application start
 session_start();      // Start PHP session
 Router::Bazinga();    // Run router

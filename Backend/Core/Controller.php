@@ -72,9 +72,9 @@ abstract class Controller
 
 	private function accessAllowed() : bool
 	{
-		if (in_array("*", $this->getAccessMethods()))
+		if (in_array("*", $this->getAccessMethods(), false))
 			return true;
-		elseif (in_array($_SERVER["REQUEST_METHOD"], $this->getAccessMethods()))
+		elseif (in_array($_SERVER["REQUEST_METHOD"], $this->getAccessMethods(), false))
 			return true;
 		else
 			return false;

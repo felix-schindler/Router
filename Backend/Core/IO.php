@@ -16,7 +16,7 @@ class IO
 	{
 		if (isset($_GET[$var]))
 			if (is_string($_GET[$var]))
-				return $exact ? $_GET[$var] : htmlspecialchars(urldecode($_GET[$var]));
+				return $exact ? strval($_GET[$var]) : htmlspecialchars(urldecode(strval($_GET[$var])));
     return null;
 	}
 
@@ -31,7 +31,7 @@ class IO
 	{
 		if (isset($_POST[$var]))
 			if (is_string($_POST[$var]))
-				return $exact ? $_POST[$var] : htmlspecialchars(urldecode($_POST[$var]));
+				return $exact ? strval($_POST[$var]) : htmlspecialchars(urldecode(strval($_POST[$var])));
     return null;
   }
 
@@ -39,7 +39,7 @@ class IO
 	 * Set or get a $_SESSION variable
 	 *
 	 * @param string $var Name of variable
-	 * @param string $value Value of variable - If this is set not null -> get to set
+	 * @param string|null $value Value of variable - If this is set not null -> get to set
 	 * @param boolean $exact Get the exact value
 	 * @return string|null Value of variable or null if not exists and on set
 	 */
@@ -58,7 +58,7 @@ class IO
 	 * Set or get a $_COOKIE variable (only HTTPS allowed)
 	 *
 	 * @param string $var Name of variable
-	 * @param string $value Value of variable - If this is set not null -> get to set
+	 * @param string|null $value Value of variable - If this is set not null -> get to set
 	 * @param integer $lifetime Standard: 30 days
 	 * @param boolean $exact Get the exact value
 	 * @return string|null Value of variable or null if not exists and on set
@@ -70,7 +70,7 @@ class IO
 
 		if (isset($_GET[$var]))
 			if (is_string($_GET[$var]))
-				return $exact ? $_COOKIE[$var] : htmlspecialchars(urldecode($_GET[$var]));
+				return $exact ? strval($_COOKIE[$var]) : htmlspecialchars(urldecode(strval($_GET[$var])));
 		return null;
 	}
 
@@ -81,4 +81,27 @@ class IO
   {
     return $_SERVER['SERVER_NAME'];
   }
+
+	/**
+	 * Returns the currently Requested URL
+	 *
+	 * @return string The URL that comes after the Host (domain), starting with a slash ending with the GETs "?"
+	 * @throws Exception When no request is set
+	 */
+	public static function GetURL() : string
+	{
+		if (isset($_SERVER["REQUEST_URI"]) && $_SERVER["REQUEST_URI"] != "")
+				return explode("?", $_SERVER["REQUEST_URI"], 2)[0];
+		throw new Exception("No request");
+	}
+
+	/**
+	 * Returns the full URL with protocol
+	 * @return string The full URL with protocol
+	 */
+	public static function GetFullURL() : string
+	{
+			$protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+			return $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	}
 }

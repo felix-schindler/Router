@@ -27,7 +27,7 @@ class Router
   public static function Bazinga() : void
   {
     // Either access via localhost or HTTPS
-    if (!isset($_SERVER["HTTPS"]) && !IO::getDomain() === "localhost")
+    if (!isset($_SERVER["HTTPS"]) && !(IO::getDomain() === "localhost"))
       throw new Exception("Only access over HTTPS allowed");
 
     // Get the route without GET variables
@@ -46,18 +46,20 @@ class Router
         if (str_contains($route, ":")) {                                        // Only routes with variables, on direct hit it would have already exited the function
           $routeArr = explode("/", $route);
           if (count($routeArr) == count($reqRouteArr)) {
-            $correctRoute = $route;                                             // Warning: Takes the first route that works!
-
             for ($i=0; $i < count($routeArr); $i++) {
               if ($routeArr[$i] !== "") {
-                if ($routeArr[$i][0] === ":") {                                 // If part of URL is a variable
-                  self::$params[substr($routeArr[$i], 1)] = $reqRouteArr[$i];   // Set as param (this could be a on-liner)
+                if ($routeArr[$i][0] === ":") {                               // If part of URL is a variable
+                  self::$params[substr($routeArr[$i], 1)] = $reqRouteArr[$i]; // Set as param (this could be a on-liner)
+                } elseif ($routeArr[$i] != $reqRouteArr[$i]) {                // Not a variable -> check agains request, if does not identical, search for next route
+                  $route = null;
                 }
               }
             }
 
-            self::$routes[$correctRoute]->runExecute(self::$params);            // A route was found, run with the parameters from the URL
-            return;
+            if ($route !== null) {
+              self::$routes[$route]->runExecute(self::$params);          // A route was found, run with the parameters from the URL
+              return;
+            }
           }
         }
       }
@@ -86,14 +88,15 @@ class Router
    * Checks if a route exists in routes array
    *
    * @param string $route Route (with starting '/')
+   * @param Controller|null $con Controller to be routed to
    * @return boolean True if exists, false otherwise
    */
-  private static function routeExists(string $route, Controller $con = null) : bool
+  private static function routeExists(string $route, ?Controller $con = null) : bool
   {
     if (isset(self::$routes[$route]))
       if ($con === null)
         return true;
-      elseif ($con !== null && self::$routes[$route] !== $con)
+      elseif (self::$routes[$route] !== $con)
         return true;
     return false;
   }

@@ -30,10 +30,14 @@ abstract class View
   /**
    * Render children
    */
-  public function renderChildren() : void
+  public function renderChildren(?string $element = null) : void
   {
-    foreach ($this->children as $child)
-      $child->render();
+    foreach ($this->children as $child) {
+      if ($element === null)
+        $child->render();
+      else
+        echo "<".$element.">" . $child->__toString() . "</".$element.">";
+    }
   }
 
   /**
@@ -43,6 +47,8 @@ abstract class View
   {
       ob_start();
       $this->render();
-      return ob_get_clean();
+      if (($content = ob_get_clean()) !== false)
+        return $content;
+      return "";
   }
 }

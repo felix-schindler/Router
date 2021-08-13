@@ -25,7 +25,7 @@ class Utils
   public static function getCdnUrl(string $path) : string
   {
     if (filter_var($path, FILTER_VALIDATE_URL) === false)
-      return "https://cdn.schindlerfelix.de/" . CDN_SUFFIX . "/" . $path;
+      return "https://cdn.schindlerfelix.de/" . CDN_SUFFIX . $path;
     else
       return $path;
   }
