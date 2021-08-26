@@ -1,7 +1,8 @@
 <?php
 
-class Query {
-    /**
+class Query
+{
+	/**
 	 * @var PDO Connection to database
 	 */
 	private PDO $con;
@@ -60,7 +61,7 @@ class Query {
 	 *
 	 * @return string Current query
 	 */
-	public function getQueryString(): string
+	public function getQueryString() : string
 	{
 		return $this->queryStr;
 	}
@@ -95,13 +96,13 @@ class Query {
 		if (!$this->run)
 			$this->execute();
 		if ($this->success) {
-			// Fetch into a given model class
-			if ($model !== null) {
-				$this->stmt->setFetchMode(PDO::FETCH_INTO, new $model);
-				return $this->stmt->fetch();
-			}
-			// Return result as array
-			else return $this->stmt->fetch(PDO::FETCH_ASSOC);
+			if ($model !== null)		// Fetch into a given model class
+				$this->stmt->setFetchMode(PDO::FETCH_INTO, $model);
+			else										// Fetch into an array
+				$this->stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+			if (($result = $this->stmt->fetch()) !== false) return $result;
+			else return null;						// Fetch failed
 		} else return null;						// Query failed
 	}
 
@@ -111,7 +112,7 @@ class Query {
 	 * @return array<string|int,mixed>|null Null if error or no result, array with values otherwise
 	 */
 	public function fetchAll() : ?array
-    {
+	{
 		if (!$this->run)
 			$this->execute();
 		if ($this->success) {
@@ -134,7 +135,7 @@ class Query {
 			$this->stmt = $stmt;
 			$this->success = $this->stmt->execute($this->values);
 		}
-    }
+	}
 
 	/**
 	 * Counts the effected rows by the last query and returns them

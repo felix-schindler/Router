@@ -24,7 +24,7 @@ abstract class Controller
 	 *
 	 * @param string $url Redirectes to this
 	 */
-	protected function Redirect(string $url) : void
+	protected function redirect(string $url) : void
 	{
 		header("Location: " . $url);
 		exit;		// Do not execute code after redirect
@@ -56,7 +56,7 @@ abstract class Controller
 	{
 		if (isset($this->params[$var]))
 			if (is_string($this->params[$var]))
-			return $exact ? $this->params[$var] : htmlspecialchars(urldecode($this->params[$var]));
+				return $exact ? $this->params[$var] : htmlspecialchars(urldecode($this->params[$var]));
 		return null;
 	}
 

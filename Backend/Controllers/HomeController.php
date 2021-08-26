@@ -11,7 +11,6 @@ class HomeController extends Controller
 	{
 		$layout = new LayoutView();
 		$layout->addChild(new HeadingView("Home"));
-		echo $this->getParam("id");
 		$layout->render();
 	}
 }
