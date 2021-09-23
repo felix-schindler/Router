@@ -2,15 +2,9 @@
 
 class InsertQuery extends Query
 {
-	/**
-	 * @var string Name of table in DB
-	 */
-	private string $tableName;
-
 	public function __construct(string $tableName)
 	{
-		$this->tableName = "`" . $tableName . "`";
-		$this->queryStr = "INSERT INTO " . $this->tableName . " VALUES (";
+		$this->queryStr = "INSERT INTO `{$tableName}` VALUES (";
 	}
 
 	/**

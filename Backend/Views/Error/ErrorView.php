@@ -4,12 +4,12 @@ class ErrorView extends View
 {
 	public function __construct(
 		private int $code = 404,
+		private bool $isAPI = false,
 		private ?string $text = null
 	){}
 
 	public function render() : void
 	{
-		// $protocol = $_ENV["SERVER_PROTOCOL"] ?? $_SERVER["SERVER_PROTOCOL"] ?? "HTTP/1.0";
 		if ($this->text === null) {
 			$this->text = match($this->code) {
 				100 => 'Continue',
@@ -52,9 +52,12 @@ class ErrorView extends View
 			};
 		}
 
-		// header($protocol . " " . $this->code . "" . $text, true, $this->error);
 		http_response_code($this->code);
-		echo "<h1>" . $this->code . " - " . $this->text . "</h1>";
-		$this->renderChildren();
+		if ($this->isAPI) {
+			(new APIView(null, false, $this->code, $this->message))->render();
+		} else {
+			echo "<h1>" . $this->code . " - " . $this->text . "</h1>";
+			$this->renderChildren();
+		}
 	}
 }

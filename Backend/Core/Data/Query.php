@@ -117,9 +117,8 @@ class Query
 			$this->execute();
 		if ($this->success) {
 			if (($result = $this->stmt->fetchAll(PDO::FETCH_ASSOC)) !== false) {
-				if (empty($result))
-					return null;
-				return $result;
+				if (!empty($result))
+					return $result;
 			}
 		}
 		return null;

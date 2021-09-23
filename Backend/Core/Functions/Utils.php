@@ -25,8 +25,9 @@ class Utils
 	public static function getCdnUrl(string $path) : string
 	{
 		if (filter_var($path, FILTER_VALIDATE_URL) === false)
-			return CDN_DOMAIN . "/" . CDN_SUFFIX . $path;
-		return $path;
+			return DOMAIN . "/" . CDN_SUFFIX . $path;
+		else
+			return $path;
 	}
 
 	/**
