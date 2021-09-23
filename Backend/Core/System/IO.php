@@ -31,7 +31,7 @@ class IO
 	{
 		if (isset($_POST[$var]))
 			if (is_string($_POST[$var]))
-				return $exact ? strval($_POST[$var]) : htmlspecialchars(urldecode(strval($_POST[$var])));
+				return $exact ? strval($_POST[$var]) : htmlspecialchars(strval($_POST[$var]));
 		return null;
 	}
 
@@ -80,7 +80,48 @@ class IO
 	}
 
 	/**
-	 * @return string URL (without HTTP(S)://)
+	 * Get the authorization headers
+	 *
+	 * @return string|null The auth headers
+	 */
+	private static function getAuthorizationHeader() : ?string
+	{
+        $headers = null;
+        if (isset($_SERVER['Authorization'])) {
+            $headers = trim($_SERVER["Authorization"]);
+        } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) {		// Nginx or fast CGI
+            $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
+        } elseif (function_exists('apache_request_headers')) {	// Apache
+			// @phan-suppress-next-line PhanUndeclaredFunction
+			$requestHeaders = apache_request_headers();
+            // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
+            $requestHeaders = array_combine(array_map('ucwords', array_keys($requestHeaders)), array_values($requestHeaders));
+            if (isset($requestHeaders['Authorization'])) {
+                $headers = trim($requestHeaders['Authorization']);
+            }
+        }
+        return $headers;
+    }
+
+	/**
+	 * Gets the bearer token, if one exists
+	 *
+	 * @return string|null The bearer token or null, if non is set.
+	 */
+	public static function getBearerToken() : ?string
+	{
+		$headers = self::getAuthorizationHeader();
+		// HEADER: Get the access token from the header
+		if (!empty($headers)) {
+			if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
+				return $matches[1];
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @return string The domain (URL without HTTP(S)://)
 	 */
 	public static function getDomain() : string
 	{
@@ -110,5 +151,16 @@ class IO
 	{
 		$protocol = ((!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] != "off") || $_SERVER["SERVER_PORT"] == 443) ? "https://" : "http://";
 		return $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	}
+
+	/**
+	 * Returns the request method
+	 * @return string The request method
+	 */
+	public static function getRequestMethod() : string
+	{
+		if (isset($_SERVER["REQUEST_METHOD"]))
+			return $_SERVER["REQUEST_METHOD"];
+		throw new Exception("No request method");
 	}
 }

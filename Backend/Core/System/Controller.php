@@ -10,6 +10,9 @@ abstract class Controller
 	 */
 	private array $params = [];
 
+	/**
+	 * @return string[] All routes the controller listens to
+	 */
 	abstract protected function getRoutes() : array;
 	abstract protected function execute() : void;
 
@@ -33,24 +36,25 @@ abstract class Controller
 	/**
 	 * Executes the controller with given params
 	 *
-	 * @param array $params Parameters
+	 * @param array<string,string> $params Parameters
 	 */
 	public function runExecute(array $params) : void
 	{
-		if ($this->accessAllowed()) {
+		if (($code = $this->accessAllowed()) === 200) {
 			$this->params = $params;
 			$this->execute();
 		} else {
-			(new ErrorView(405))->render();
+			(new ErrorView($code))->render();
+			return;
 		}
 	}
 
 	/**
 	 * Get a param from within the URL
 	 *
-	 * @param string $var
-	 * @param boolean $exact
-	 * @return string|null
+	 * @param string $var Name of variable
+	 * @param boolean $exact Get the exact value
+	 * @return string|null Value of variable or null if not exists
 	 */
 	protected function getParam(string $var, bool $exact = false) : ?string
 	{
@@ -61,22 +65,63 @@ abstract class Controller
 	}
 
 	/**
-	 * Get access methods
+	 * Defines which access methods are allowed (wildcard works)
 	 *
-	 * @return string[]
+	 * @return string[] Allowed access methods
 	 */
 	protected function getAccessMethods() : array
 	{
 		return ["*"];
 	}
 
-	private function accessAllowed() : bool
+	/**
+	 * Defines if user authentication is required
+	 *
+	 * @return boolean True if it is, false otherwise
+	 */
+	protected function userRequired() : bool
 	{
+		return false;
+	}
+
+	/**
+	 * Checks if the controller is being accessed with an allowed access method
+	 *
+	 * @return boolean True if it is, false otherwise
+	 */
+	private function accessMethodAllowed() : bool {
 		if (in_array("*", $this->getAccessMethods(), false))
 			return true;
-		elseif (in_array($_SERVER["REQUEST_METHOD"], $this->getAccessMethods(), false))
+		elseif (in_array(IO::getRequestMethod(), $this->getAccessMethods(), false))
 			return true;
 		else
 			return false;
+	}
+
+	/**
+	 * Checks the user token, if user is required
+	 *
+	 * @return boolean
+	 */
+	private function authAccessAllowed() : bool
+	{
+		if (!$this->userRequired())
+			return true;
+		else
+			return Auth::validateToken();
+	}
+
+	/**
+	 * Checks if the access to this controller is allowed
+	 *
+	 * @return int HTTP status code (200 === OK!)
+	 */
+	private function accessAllowed() : int
+	{
+		if (!$this->accessMethodAllowed())
+			return 405;
+		if (!$this->authAccessAllowed())
+			return 401;
+		return 200;
 	}
 }

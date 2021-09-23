@@ -2,6 +2,12 @@
 
 class APIView extends View
 {
+	/**
+	 * @param array<mixed>|null $data
+	 * @param boolean $success Whether the request was successfull or not
+	 * @param integer $code (HTTP) code for the request
+	 * @param string $message Request answer
+	 */
 	public function __construct(
 		public ?array $data = null,
 		public bool $success = true,
@@ -11,7 +17,7 @@ class APIView extends View
 
 	public function render() : void
 	{
-		header('Content-type: application/json; charset=utf-8');
+		header("Content-type: application/json; charset=utf-8");
 		header("Access-Control-Allow-Origin: *");
 
 		echo json_encode(

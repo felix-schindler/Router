@@ -7,7 +7,7 @@ class Router
 {
 	/**
 	 * Hold all routes and controllers
-	 * @var array<string,controller>
+	 * @var array<string,Controller>
 	 */
 	private static $routes = [];
 
@@ -38,33 +38,42 @@ class Router
 			self::$routes[self::$reqRoute]->runExecute([]);
 			return;
 		} else {
-			$routes = array_keys(self::$routes);                                      // Get all routes as string
-			$reqRouteArr = explode("/", self::getRouteNoSlash(self::$reqRoute));      // Split requested route
+			$routes = array_keys(self::$routes);                                        // Get all routes as string
+			$reqRouteArr = explode("/", self::getRouteNoSlash(self::$reqRoute));        // Split requested route
 
-			foreach ($routes as $route) {
+			$hits = [];
+			foreach ($routes as $route) {												// Get the route that fits best
 				$route = self::getRouteNoSlash($route);
 				if (str_contains($route, ":")) {                                        // Only routes with variables, on direct hit it would have already exited the function
 					$routeArr = explode("/", $route);
 					if (count($routeArr) == count($reqRouteArr)) {
+						$hits[$route] = 0;
 						for ($i=0; $i < count($routeArr); $i++) {
-							if ($routeArr[$i] !== "") {
-								if ($routeArr[$i][0] === ":")                                   // If part of URL is a variable
-									self::$params[substr($routeArr[$i], 1)] = $reqRouteArr[$i]; // Set as param (this could be a on-liner)
-								elseif ($routeArr[$i] != $reqRouteArr[$i])                      // Not a variable -> check agains request, if does not identical, search for next route
-									$route = null;
+							if ($routeArr[$i] != "") {
+								if ($routeArr[$i] == $reqRouteArr[$i])					// Prioritise direct routes over variables
+									$hits[$route] += 1;
+								else													// Remove route if does not match and not a variable
+									if ($routeArr[$i][0] != ":")
+										unset($hits[$route]);
 							}
-						}
-
-						if ($route !== null) {
-							self::$routes[$route]->runExecute(self::$params);          // A route was found, run with the parameters from the URL
-							return;
 						}
 					}
 				}
 			}
 
-			// No route found
-			(new ErrorController)->runExecute([]);
+			arsort($hits);																// Sort routes by hit
+			$routes = array_keys($hits);
+			if (!empty($hits)) {														// A route was found, run with the parameters from the URL
+				$route = $routes[0];
+				$routeArr = explode("/", $route);
+				for ($i=0; $i < count($routeArr); $i++)
+					if ($routeArr[$i][0] === ":")										// If part of URL is a variable
+						self::$params[substr($routeArr[$i], 1)] = $reqRouteArr[$i];		// Set as param (this could be a on-liner)
+				self::$routes[$route]->runExecute(self::$params);						// Execute controller for found route
+				return;																	// Exit after executing the controller
+			}
+
+			(new ErrorController)->runExecute([]);										// No route found -> ErrorController
 		}
 	}
 

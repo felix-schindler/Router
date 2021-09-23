@@ -52,7 +52,7 @@ class Auth
 		if (($decoded = base64_decode($token)) !== false) {
 			$decToken = explode(".", $decoded);
 			if (count($decToken) === 3) {
-				if (($uuid = base64_decode($decToken[0])) !== false && ($passHash = base64_decode($decToken[1])) !== false && ($validUntil = base64_decode($decToken[2])) !== false) {
+				if (($uuid = base64_decode($decToken[0])) != false && ($passHash = base64_decode($decToken[1])) != false && ($validUntil = base64_decode($decToken[2])) != false) {
 					$dayDiff = (new DateTime())->diff(new DateTime($validUntil))->format('%r%a');
 
 					// Date is between 1 and 30 days in the future

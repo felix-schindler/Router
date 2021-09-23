@@ -8,8 +8,6 @@ class HeadingView extends View
 
 	public function render() : void
 	{
-?>
-		<h1><?=$this->title?></h1>
-<?php
+		echo "<h1>{$this->title}</h1>";
 	}
 }

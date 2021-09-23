@@ -8,8 +8,6 @@ class TextView extends View
 
 	public function render() : void
 	{
-?>
-		<p><?=$this->text?></p>
-<?php
+		echo "<p>{$this->title}</p>";
 	}
 }
