@@ -5,13 +5,13 @@ class ErrorView extends View
 	public function __construct(
 		private int $code = 404,
 		private bool $isAPI = false,
-		private ?string $text = null
+		private ?string $message = null
 	){}
 
 	public function render() : void
 	{
-		if ($this->text === null) {
-			$this->text = match($this->code) {
+		if ($this->message === null) {
+			$this->message = match($this->code) {
 				100 => 'Continue',
 				101 => 'Switching Protocols',
 				200 => 'OK',
@@ -56,7 +56,7 @@ class ErrorView extends View
 		if ($this->isAPI) {
 			(new APIView(null, false, $this->code, $this->message))->render();
 		} else {
-			echo "<h1>" . $this->code . " - " . $this->text . "</h1>";
+			echo "<h1>" . $this->code . " - " . $this->message . "</h1>";
 			$this->renderChildren();
 		}
 	}

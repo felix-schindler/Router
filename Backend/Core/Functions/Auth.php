@@ -7,7 +7,7 @@ class Auth
 	 *
 	 * @param string $email Email of a user
 	 * @param string $password Password of a user
-	 * @return array|null [name, token]
+	 * @return array<string,string>|null [name, token]
 	 */
 	public static function login(string $email, string $password) : ?array
 	{
