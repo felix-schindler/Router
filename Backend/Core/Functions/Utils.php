@@ -6,14 +6,15 @@
 class Utils
 {
 	/**
-	 * Return the file extension of a given filename
+	 * Hashes the given data string with a chosen hash algorythm (Standard: SHA256)
 	 *
-	 * @param string $filename
-	 * @return string Extension of file
+	 * @param string $data The data to be hashed
+	 * @param string $algo Hashing algorithmn - Standard: SHA256
+	 * @return string Hashed data
 	 */
-	public static function getFileExtension(string $filename) : string
+	public static function encrypt(string $data, string $algo = "sha256") : string
 	{
-		return pathinfo($filename, PATHINFO_EXTENSION);
+		return hash($algo, $data);
 	}
 
 	/**
@@ -31,41 +32,12 @@ class Utils
 	}
 
 	/**
-	 * Hashes the given data string with a chosen hash algorythm (Standard: SHA256)
-	 *
-	 * @param string $data The data to be hashed
-	 * @param string $algo Hashing algorithmn - Standard: SHA256
-	 * @return string Hashed data
-	 */
-	public static function encrypt(string $data, string $algo = "sha256") : string
-	{
-		return hash($algo, $data);
-	}
-
-	/**
-	 * Generates a random string with latin characters and decimal numbers
-	 *
-	 * @param integer $length
-	 * @return string Random string
-	 */
-	public static function randomString(int $length = 64) : string
-	{
-		$characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		$randStr = "";
-
-		for ($i = 0; $i < $length; $i++)
-			$randStr .= $characters[rand(0, strlen($characters)-1)];
-
-		return $randStr;
-	}
-
-	/**
-	 * Generates a random GUID (Version 4)
+	 * Generates a random uuid (Version 4)
 	 *
 	 * @param string|null $data Random bytes
-	 * @return string A random GUID
+	 * @return string A random uuid
 	 */
-	public static function guid(?string $data = null) : string
+	public static function uuid(?string $data = null) : string
 	{
 		// Generate 16 bytes (128 bits) of random data or use the data passed into the function.
 		$data ??= random_bytes(16);
@@ -78,5 +50,15 @@ class Utils
 
 		// Output the 36 character UUID.
 		return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+	}
+
+	/**
+	 * Check if a string has the correct format to be a uuid (v4)
+	 *
+	 * @param string $uuid String to be checked
+	 * @return boolean Wheather it's the correct format or not
+	 */
+	public static function isUUID(string $uuid) {
+		return preg_match("/^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i", $uuid) === 1;
 	}
 }

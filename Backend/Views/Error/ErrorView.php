@@ -3,9 +3,9 @@
 class ErrorView extends View
 {
 	public function __construct(
-		private int $code = 404,
-		private bool $isAPI = false,
-		private ?string $message = null
+		public int $code = 404,
+		public bool $isAPI = false,
+		public ?string $message = null
 	){}
 
 	public function render() : void
@@ -49,6 +49,7 @@ class ErrorView extends View
 				503 => 'Service Unavailable',
 				504 => 'Gateway Time-out',
 				505 => 'HTTP Version not supported',
+				default => ''
 			};
 		}
 

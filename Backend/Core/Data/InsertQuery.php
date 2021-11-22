@@ -15,8 +15,10 @@ class InsertQuery extends Query
 	 */
 	public function add(string $columnName, string $value) : void
 	{
-		if ($this->values !== null)
+		if ($this->values != null)
 			$this->queryStr .= ",";
+		else
+			$this->values = [];
 		$placeholder = ":" . strtolower($columnName);
 		$this->queryStr .= " `$columnName`=";
 		$this->queryStr .= $placeholder;
@@ -33,6 +35,6 @@ class InsertQuery extends Query
 	public function run(?string $idName = null) : int|string
 	{
 		$this->queryStr .= ");";
-		return $this->writeData($idName);
+		return $this->lastInsertId($idName);
 	}
 }

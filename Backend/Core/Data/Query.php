@@ -37,7 +37,7 @@ class Query
 	 * You SHOULD DEFINETELY use placeholders and an array with the values for execution
 	 *
 	 * @param string $queryStr Query as a string
-	 * @param array<string,string|float>|null $values Values for placeholders
+	 * @param array<string|int,string|float>|null $values Values for placeholders
 	 */
 	public function __construct($queryStr = "", ?array $values = null)
 	{
@@ -72,7 +72,7 @@ class Query
 	 * @param string|null $name ID row name, must be specified if row name doesn't equal "ID"
 	 * @return int|string Last insert ID
 	 */
-	protected function writeData(string $name = null) : int|string
+	public function lastInsertId(string $name = null) : int|string
 	{
 		if (!$this->run)
 			$this->execute();
@@ -109,9 +109,9 @@ class Query
 	/**
 	 * Reads all data from database
 	 *
-	 * @return array<string|int,mixed>|null Null if error or no result, array with values otherwise
+	 * @return mixed Null if error or no result, array with values otherwise
 	 */
-	public function fetchAll() : ?array
+	public function fetchAll() : mixed
 	{
 		if (!$this->run)
 			$this->execute();
@@ -149,7 +149,7 @@ class Query
 	}
 
 	/**
-	 * Returns if the query was successful
+	 * Returns wheather the query was successful
 	 *
 	 * @return boolean Query successful
 	 */

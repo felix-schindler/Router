@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * User authentication
+ */
 class Auth
 {
 	/**
@@ -32,10 +35,16 @@ class Auth
 		return null;
 	}
 
-	// TODO
+	/**
+	 * Register a new user
+	 *
+	 * @param string $email Email of the user
+	 * @param string $password Password of the user
+	 * @return boolean Wheather the user was registered
+	 */
 	public static function register(string $email, string $password) : bool
 	{
-		return false;
+		return false; // TODO implement
 	}
 
 	/**
@@ -76,7 +85,7 @@ class Auth
 	 */
 	public static function getTokenUUID() : ?string
 	{
-		if (($token = IO::getBearerToken()) != null) {
+		if (($token = IO::getAuthorizationHeader()) != null) {
 			if (($decoded = base64_decode($token)) !== false) {
 				$decToken = explode(".", $decoded);
 				if (($uuid = base64_decode($decToken[0])) !== false)

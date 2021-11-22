@@ -67,13 +67,13 @@ class Router
 				$route = $routes[0];
 				$routeArr = explode("/", $route);
 				for ($i=0; $i < count($routeArr); $i++)
-					if ($routeArr[$i][0] === ":")										// If part of URL is a variable
+					if (isset($routeArr[$i][0]) && $routeArr[$i][0] === ":")			// If part of URL is a variable
 						self::$params[substr($routeArr[$i], 1)] = $reqRouteArr[$i];		// Set as param (this could be a on-liner)
 				self::$routes[$route]->runExecute(self::$params);						// Execute controller for found route
 				return;																	// Exit after executing the controller
 			}
 
-			(new ErrorController)->runExecute([]);										// No route found -> ErrorController
+			(new ErrorController())->runExecute([]);									// No route found -> ErrorController
 		}
 	}
 

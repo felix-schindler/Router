@@ -60,7 +60,7 @@ abstract class Controller
 	{
 		if (isset($this->params[$var]))
 			if (is_string($this->params[$var]))
-				return $exact ? $this->params[$var] : htmlspecialchars(urldecode($this->params[$var]));
+				return $exact ? strval($this->params[$var]) : htmlspecialchars(urldecode(strval($this->params[$var])));
 		return null;
 	}
 
@@ -90,9 +90,7 @@ abstract class Controller
 	 * @return boolean True if it is, false otherwise
 	 */
 	private function accessMethodAllowed() : bool {
-		if (in_array("*", $this->getAccessMethods(), false))
-			return true;
-		elseif (in_array(IO::getRequestMethod(), $this->getAccessMethods(), false))
+		if (in_array("*", $this->getAccessMethods()) || in_array(IO::getRequestMethod(), $this->getAccessMethods()))
 			return true;
 		else
 			return false;
