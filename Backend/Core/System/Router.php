@@ -12,16 +12,6 @@ class Router
 	private static $routes = [];
 
 	/**
-	 * @var array<string,string>
-	 */
-	private static array $params = [];
-
-	/**
-	 * @var string Currently requested route
-	 */
-	private static string $reqRoute = "";
-
-	/**
 	 * The total main function
 	 */
 	public static function Bazinga() : void
@@ -31,46 +21,56 @@ class Router
 			throw new Exception("Only access over HTTPS allowed");
 
 		// Get the route without GET variables
-		self::$reqRoute = explode("?", $_SERVER["REQUEST_URI"], 2)[0];
+		$reqRoute = IO::getURL();
 
 		// Run the routers execute method or, if no route matches, run the error
-		if (self::routeExists(self::$reqRoute)) {
-			self::$routes[self::$reqRoute]->runExecute([]);
+		if (self::routeExists($reqRoute)) {												// Direct hit
+			self::$routes[$reqRoute]->runExecute([]);
 			return;
 		} else {
 			$routes = array_keys(self::$routes);                                        // Get all routes as string
-			$reqRouteArr = explode("/", self::getRouteNoSlash(self::$reqRoute));        // Split requested route
+			$reqRouteArr = explode("/", self::getRouteNoSlash($reqRoute));		        // Split requested route
 
-			$hits = [];
-			foreach ($routes as $route) {												// Get the route that fits best
+			$routes = array_filter($routes, function($route) use ($reqRouteArr) {		// Filter out all routes that don't match
 				$route = self::getRouteNoSlash($route);
-				if (str_contains($route, ":")) {                                        // Only routes with variables, on direct hit it would have already exited the function
-					$routeArr = explode("/", $route);
-					if (count($routeArr) == count($reqRouteArr)) {
+				$routeArr = explode("/", $route);
+				if (str_contains($route, ':'))											// Only routes with variables, on direct hit it would have already exited
+					if (count($routeArr) == count($reqRouteArr))						// Routes have to same length to be a match
+						return true;
+				return false;
+			});
+
+			if (!empty($routes)) {
+				if (count($routes) == 1)
+					$route = $routes[0];
+				else {
+					$hits = [];
+					foreach ($routes as $route) {										// Calculate scores to get the route that fits best
+						$route = self::getRouteNoSlash($route);
+						$routeArr = explode("/", $route);
 						$hits[$route] = 0;
 						for ($i=0; $i < count($routeArr); $i++) {
-							if ($routeArr[$i] != "") {
-								if ($routeArr[$i] == $reqRouteArr[$i])					// Prioritise direct routes over variables
-									$hits[$route] += 1;
-								else													// Remove route if does not match and not a variable
-									if ($routeArr[$i][0] != ":")
-										unset($hits[$route]);
-							}
+							if ($routeArr[$i] == $reqRouteArr[$i])						// Prioritise direct routes over variables
+								$hits[$route] += 1;
+							elseif ($routeArr[$i][0] != ":")							// Remove route if does not match and not a variable
+								unset($hits[$route]);
 						}
 					}
-				}
-			}
 
-			arsort($hits);																// Sort routes by hit
-			$routes = array_keys($hits);
-			if (!empty($hits)) {														// A route was found, run with the parameters from the URL
-				$route = $routes[0];
+					if (!empty($hits)) {												// A route was found, run with the parameters from the URL
+						arsort($hits);													// Sort routes by hit score
+						$routes = array_keys($hits);
+						$route = $routes[0];
+					}
+				}
+
 				$routeArr = explode("/", $route);
+				$params = [];
 				for ($i=0; $i < count($routeArr); $i++)
-					if (isset($routeArr[$i][0]) && $routeArr[$i][0] === ":")			// If part of URL is a variable
-						self::$params[substr($routeArr[$i], 1)] = $reqRouteArr[$i];		// Set as param (this could be a on-liner)
-				self::$routes[$route]->runExecute(self::$params);						// Execute controller for found route
-				return;																	// Exit after executing the controller
+					if (isset($routeArr[$i][0]) && $routeArr[$i][0] === ":")		// If part of URL is a variable
+						$params[substr($routeArr[$i], 1)] = $reqRouteArr[$i];		// Set as param (this could be a on-liner)
+				self::$routes[$route]->runExecute($params);							// Execute controller for found route
+				return;
 			}
 
 			(new ErrorController())->runExecute([]);									// No route found -> ErrorController

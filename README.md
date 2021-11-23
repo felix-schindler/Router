@@ -2,11 +2,17 @@
 An amazing dependency-free router in and for PHP so you can use readable routes like "/u/:username" instead of ugly ones like "/user.php?username=" and have an awesome MVC, object-oriented design pattern.
 To see it in action, click [here](https://social.schindlerfelix.de).
 
-## Getting started:
+## Getting started
 1. Clone GitHub Repo - `git clone git@github.com:felix-schindler/Router.git && cd Router`
 2. __OPTIONAL__: Install composer dependencies - `cd Backend/Libraries && composer install`
 3. That's it. Run `php -S localhost:8000` or throw it on a web server
 
+## Requirements
+- [PHP 8.0](https://www.php.net) with [PDO](https://www.php.net/manual/de/book.pdo.php)
+- __OPTIONAL__: [Composer](https://getcomposer.org)
+
+## Remove junk
+### Composer
 This router is dependency-free but has composer support. The only composer package installed is [PHPStan](https://phpstan.org), for code checks.
 If you do not need this, you can simply remove these files with the follwing commands:
 ```zsh
@@ -14,12 +20,23 @@ rm -rf Backend/Libraries
 rm .phpstan.neon
 ```
 
-## Requirements
-- [PHP 8.0](https://www.php.net) with [PDO](https://www.php.net/manual/de/book.pdo.php)
-- __OPTIONAL__: [Composer](https://getcomposer.org)
+### Remove all not needed files.
+```zsh
+rm -rf .github
+rm -rf .vscode
+rm favicon.ico
+rm README.md
+rm -rf Backend/Libraries
+rm .phpstan.neon
+rm Views/LayoutView.php
+rm Backend/Core/Auth.php
+rm Backend/Core/Utils.php
+rm Backend/Data/Query.php
+rm Backend/Controllers/NotCalledController.php
+rm Backend/Controllers/SecondHomeController.php
+```
 
 ## Web servers
-
 ### Nginx
 Your domain config needs a rewrite rule, something like this
 
