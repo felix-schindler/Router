@@ -29,6 +29,8 @@ class LayoutView extends View
 	<header>
 		<a href="/">Home</a>
 		<a href="/article/2">Other one</a>
+		<a href="/user/2">Should not be called</a>
+		<a href="/api">API</a>
 		<a href="/err">Error</a>
 	</header>
 
