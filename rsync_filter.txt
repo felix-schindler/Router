@@ -1,0 +1,12 @@
++ Frontend/***
++ Backend/***
+- .*
+- *.md
+- node_modules/***
+- src/***
+- static/***
+- package.json
+- package-lock.json
+- rsync_filter.txt
+- svelte.config.js
+- tsconfig.json

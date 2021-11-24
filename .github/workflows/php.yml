@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  php:
 
     runs-on: ubuntu-latest
 
@@ -26,5 +26,5 @@ jobs:
     - name: Install dependencies
       run: cd Backend/Libraries && composer install --no-progress
 
-    - name: Run test suite
-      run: php Backend/Libraries/vendor/bin/phpstan analyse -c .phpstan.neon --memory-limit 500M
+    - name: Run code check
+      run: php Backend/Libraries/vendor/bin/phpstan analyse --no-progress -c .phpstan.neon --memory-limit 500M

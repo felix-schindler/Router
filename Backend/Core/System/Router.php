@@ -73,7 +73,7 @@ class Router
 				return;
 			}
 
-			(new ErrorController())->runExecute([]);									// No route found -> ErrorController
+			(new FrontendController())->runExecute([]);								// No route found -> ErrorController
 		}
 	}
 
