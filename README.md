@@ -41,7 +41,7 @@ rm Backend/Controllers/SecondHomeController.php
 Your domain config needs a rewrite rule, something like this
 
 ```nginx
-index.php;
+index index.php;
 
 location / {
   try_files $uri @rewrites;
