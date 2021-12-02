@@ -1,0 +1,59 @@
+name: PHP and NPM (Svelte)
+
+on:
+  push:
+    branches: [ svelte ]
+  pull_request:
+    branches: [ svelte ]
+
+jobs:
+  php:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: Backend/Libraries/vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: cd Backend/Libraries && composer install --no-progress
+
+    - name: Run code check
+      run: php Backend/Libraries/vendor/bin/phpstan analyse --no-progress -c .phpstan.neon --memory-limit 500M
+
+  svelte:
+    runs-on: ubuntu-latest
+    needs: php
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Cache NPM packages
+      id: npm-cache
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-js-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-js-
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run code check
+      run: npm run check
+
+    - name: Make a working website out of all
+      # rsync -avhrz --delete --filter=". rsync_filter.txt" . /srv/TODO
+      run: |
+        npm run build --if-present
+        mv Frontend/* .
+        rm -rf Frontend
+        echo "here could be rsync"
