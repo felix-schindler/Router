@@ -2,9 +2,8 @@
 
 class APIController extends Controller
 {
-	protected function getRoutes(): array {
-		return ["/api"];
-	}
+	protected array $paths = ['/api'];
+	protected array $methods = ['POST'];
 
 	public function execute(): void {
 		(new APIView())->render();

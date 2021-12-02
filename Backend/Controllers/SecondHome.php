@@ -2,13 +2,7 @@
 
 class SecondHome extends Controller
 {
-	protected function getRoutes(): array {
-		return ["/article/:id"];
-	}
-
-	protected function getAccessMethods(): array {
-		return ["GET"];
-	}
+	protected array $paths = ['/article/:id'];
 
 	public function execute(): void {
 		$layout = new LayoutView();

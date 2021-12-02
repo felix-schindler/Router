@@ -2,9 +2,7 @@
 
 class HomeController extends Controller
 {
-	protected function getRoutes(): array {
-		return ["/"];
-	}
+	protected array $paths = ['/'];
 
 	public function execute(): void {
 		$layout = new LayoutView();

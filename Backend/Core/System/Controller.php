@@ -8,27 +8,26 @@ abstract class Controller
 	/**
 	 * @var array<string,string>
 	 */
-	private array $params = [];
+	protected readonly array $params;
 
 	/**
-	 * @return string[] All routes the controller listens to
+	 * @var string[]
 	 */
-	abstract protected function getRoutes(): array;
-	abstract protected function execute(): void;
+	protected array $paths = [];
+
+	/**
+	 * @var string[]
+	 */
+	protected array $methods = ['GET'];
+
+	/**
+	 * Defines wheather user authentication is required
+	 */
+	protected bool $userRequired = false;
 
 	public function initRoutes(): void {
-		foreach ($this->getRoutes() as $route)
-			Router::addRoute($route, $this);
-	}
-
-	/**
-	 * Redirects user to new URL
-	 *
-	 * @param string $url Redirectes to this
-	 */
-	protected function redirect(string $url): void {
-		header("Location: " . $url);
-		exit;		// Do not execute code after redirect
+		foreach ($this->paths as $path)
+			Router::addRoute($path, $this);
 	}
 
 	/**
@@ -46,6 +45,8 @@ abstract class Controller
 		}
 	}
 
+	abstract protected function execute(): void;
+
 	/**
 	 * Get a param from within the URL
 	 *
@@ -61,45 +62,13 @@ abstract class Controller
 	}
 
 	/**
-	 * Defines which access methods are allowed (wildcard works)
+	 * Redirects user to new URL
 	 *
-	 * @return string[] Allowed access methods
+	 * @param string $url Redirectes to this
 	 */
-	protected function getAccessMethods(): array {
-		return ["*"];
-	}
-
-	/**
-	 * Defines if user authentication is required
-	 *
-	 * @return boolean True if it is, false otherwise
-	 */
-	protected function userRequired(): bool {
-		return false;
-	}
-
-	/**
-	 * Checks if the controller is being accessed with an allowed access method
-	 *
-	 * @return boolean True if it is, false otherwise
-	 */
-	private function accessMethodAllowed(): bool {
-		if (in_array("*", $this->getAccessMethods()) || in_array(IO::getRequestMethod(), $this->getAccessMethods()))
-			return true;
-		else
-			return false;
-	}
-
-	/**
-	 * Checks the user token, if user is required
-	 *
-	 * @return boolean
-	 */
-	private function authAccessAllowed(): bool {
-		if (!$this->userRequired())
-			return true;
-		else
-			return Auth::validateToken();
+	protected function redirect(string $url): never {
+		header('Location: ' . $url);
+		exit;
 	}
 
 	/**
@@ -108,9 +77,9 @@ abstract class Controller
 	 * @return int HTTP status code (200 === OK!)
 	 */
 	private function accessAllowed(): int {
-		if (!$this->accessMethodAllowed())
+		if (empty(array_intersect(['*', 'OPTIONS', 'HEAD', IO::method()], $this->methods)))
 			return 405;
-		if (!$this->authAccessAllowed())
+		if ($this->userRequired && Auth::validateToken())
 			return 401;
 		return 200;
 	}

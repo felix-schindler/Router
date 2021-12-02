@@ -2,13 +2,7 @@
 
 class NotCalledController extends Controller
 {
-	protected function getRoutes(): array {
-		return ["/:type/:id"];
-	}
-
-	protected function getAccessMethods(): array {
-		return ["GET"];
-	}
+	protected array $paths = ['/:type/:id'];
 
 	public function execute(): void {
 		$layout = new LayoutView();

@@ -65,7 +65,7 @@ class IO
 	 */
 	public static function COOKIE(string $var, ?string $value = null, int $lifetime = 2592000, bool $exact = false): ?string {
 		if ($value !== null) {
-			setcookie($var, $value, time()+$lifetime, "/", self::getDomain(), true);
+			setcookie($var, $value, time()+$lifetime, "/", self::domain(), true);
 			return null;
 		}
 
@@ -95,7 +95,6 @@ class IO
 				$headers = trim($requestHeaders['Authorization']);
 			}
 		}
-
 		return $headers;
 	}
 
@@ -118,7 +117,7 @@ class IO
 	/**
 	 * @return string The domain (URL without HTTP(S)://)
 	 */
-	public static function getDomain(): string {
+	public static function domain(): string {
 		if (isset($_SERVER["SERVER_NAME"]) && $_SERVER["SERVER_NAME"] != null)
 			return $_SERVER["SERVER_NAME"];
 		throw new Exception("Not running on a server");
@@ -127,31 +126,30 @@ class IO
 	/**
 	 * Returns the currently Requested URL
 	 *
-	 * @return string The URL that comes after the Host (domain), starting with a slash ending with the GETs "?"
+	 * @return string The requested path
 	 * @throws Exception When no request is set
 	 */
-	public static function getURL(): string {
+	public static function path(): string {
 		if (isset($_SERVER["REQUEST_URI"]) && $_SERVER["REQUEST_URI"] != null)
 			return explode("?", $_SERVER["REQUEST_URI"], 2)[0];
 		throw new Exception("No request");
 	}
 
 	/**
-	 * Returns the full URL with protocol
+	 * Returns the full URL with protocol and request uri
 	 * @return string The full URL with protocol
 	 */
-	public static function getFullURL(): string {
-		$protocol = ((!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] != "off") || $_SERVER["SERVER_PORT"] == 443) ? "https://": "http://";
-		return $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	public static function fullURL(): string {
+		return 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	}
 
 	/**
 	 * Returns the request method
 	 * @return string The request method
 	 */
-	public static function getRequestMethod(): string {
+	public static function method(): string {
 		if (isset($_SERVER["REQUEST_METHOD"]))
 			return $_SERVER["REQUEST_METHOD"];
-		throw new Exception("No request method");
+		throw new Exception("No request method set");
 	}
 }

@@ -8,28 +8,25 @@ class ClassLoader
 	/**
 	 * Currently loaded classes
 	 *
-	 * @var array<string,string>
+	 * @var array<string,string> - Class name, Path
 	 */
 	private static array $classes = [];
 
 	/**
 	 * Registers the Autoloader
 	 */
-	public static function register(): void {
-		self::loadClasses("Backend");
-		spl_autoload_register("ClassLoader::LoadClass", prepend: true);
-		self::initControllers();
-	}
+	public static function 파람(): void {
+		$files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/../../Backend'), RecursiveIteratorIterator::SELF_FIRST);
+		foreach($files as $file)
+			if (pathinfo($file->getFileName(), PATHINFO_EXTENSION) == "php" && !str_contains($file->getPathname(), '/Libraries/vendor/'))
+				self::$classes[str_replace(".php", "", $file->getFileName())] = $file->getPathname();
 
-	/**
-	 * Require the file of a specific class
-	 *
-	 * @param string $className Name of class to require
-	 */
-	public static function LoadClass(string $className): void {
-		if (isset(self::$classes[$className]))
-			if (file_exists(self::$classes[$className]))
+		spl_autoload_register(function($className): void {
+			if (isset(self::$classes[$className]) && file_exists(self::$classes[$className]))
 				require_once(self::$classes[$className]);
+		}, prepend: true);
+
+		self::initControllers();
 	}
 
 	/**
@@ -44,30 +41,7 @@ class ClassLoader
 			}
 		}
 	}
-
-	/**
-	 * Iterate recursively over a directory and add to classes array
-	 *
-	 * @param string $dir - Directory to check for php files
-	 */
-	private static function loadClasses(string $dir): void {
-		if (($handle = opendir($dir)) !== false) {
-			while (false !== ($file = readdir($handle))) {
-				if ($file !== "." && $file !== "..") {
-					$path = $dir . "/" . $file;
-					if (is_file($path)) {
-						if (pathinfo($file, PATHINFO_EXTENSION) == "php") {
-							self::$classes[str_replace(".php", "", $file)] = $path;
-						}
-					} elseif (is_dir($path)) {
-						self::loadClasses($path);
-					}
-				}
-			}
-			closedir($handle);
-		}
-	}
 }
 
 // Run the class loader
-ClassLoader::register();
+ClassLoader::파람();
