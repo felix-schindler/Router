@@ -1,6 +1,9 @@
 # Router
-An amazing dependency-free router in and for PHP so you can use readable routes like "/u/:username" instead of ugly ones like "/user.php?username=" and have an awesome MVC, object-oriented design pattern.
-To see it in action, click [here](https://social.schindlerfelix.de).
+An amazing dependency-free router in and for PHP so you can use readable routes like "/u/:username" instead of ugly ones like "/user.php?username=" and have an awesome MVC, object-oriented design pattern. With this you have the choice to have Svelte frontend and PHP backend at once, for easier deployment.
+
+## In action
+- To see it in action with only PHP (branch: main), click [here](https://blog.schindlerfelix.de).
+- To see it in action with Svelte (branch: svelte), click [here](https://social.schindlerfelix.de).
 
 ## Getting started
 1. Clone GitHub Repo - `git clone git@github.com:felix-schindler/Router.git && cd Router`
@@ -8,7 +11,7 @@ To see it in action, click [here](https://social.schindlerfelix.de).
 3. That's it. Run `php -S localhost:8000` or throw it on a web server
 
 ## Requirements
-- [PHP 8.0](https://www.php.net) with [PDO](https://www.php.net/manual/de/book.pdo.php)
+- [PHP 8.1](https://www.php.net) with [PDO](https://www.php.net/manual/de/book.pdo.php)
 - __OPTIONAL__: [Composer](https://getcomposer.org)
 
 ## Remove junk
@@ -20,29 +23,11 @@ rm -rf Backend/Libraries
 rm .phpstan.neon
 ```
 
-### Remove all not needed files.
-```zsh
-rm -rf .github
-rm -rf .vscode
-rm favicon.ico
-rm README.md
-rm -rf Backend/Libraries
-rm .phpstan.neon
-rm Views/LayoutView.php
-rm Backend/Core/Auth.php
-rm Backend/Core/Utils.php
-rm Backend/Data/Query.php
-rm Backend/Controllers/NotCalledController.php
-rm Backend/Controllers/SecondHomeController.php
-```
-
 ## Web servers
 ### Nginx
 Your domain config needs a rewrite rule, something like this
 
 ```nginx
-index index.php;
-
 location / {
   try_files $uri @rewrites;
 }
@@ -50,24 +35,12 @@ location / {
 location @rewrites {
   rewrite ^/(.*)$ /index.php?param=$1;
 }
-
-location ~ \.php$ {
-  include snippets/fastcgi-php.conf;
-  fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
-}
 ```
 
 ### Apache2
 Using Apache2 you'll need a .htaccess file looking something like this, to route everything through the `index.php` file, the main entry point.
 
-```htaccess
-RewriteEngine On
-RewriteBase /
-RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
-
-Options -MultiViews
-
+```apacheconf
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]
