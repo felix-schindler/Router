@@ -8,7 +8,7 @@ abstract class Controller
 	/**
 	 * @var array<string,string>
 	 */
-	protected readonly array $params;
+	private array $params;
 
 	/**
 	 * @var string[]
