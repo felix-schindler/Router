@@ -15,8 +15,7 @@ class ClassLoader
 	/**
 	 * Registers the Autoloader
 	 */
-	public static function register() : void
-	{
+	public static function register(): void {
 		self::loadClasses("Backend");
 		spl_autoload_register("ClassLoader::LoadClass", prepend: true);
 		self::initControllers();
@@ -27,8 +26,7 @@ class ClassLoader
 	 *
 	 * @param string $className Name of class to require
 	 */
-	public static function LoadClass(string $className) : void
-	{
+	public static function LoadClass(string $className): void {
 		if (isset(self::$classes[$className]))
 			if (file_exists(self::$classes[$className]))
 				require_once(self::$classes[$className]);
@@ -37,8 +35,7 @@ class ClassLoader
 	/**
 	 * Initialize the routes of all controllers
 	 */
-	private static function initControllers() : void
-	{
+	private static function initControllers(): void {
 		foreach (self::$classes as $name => $path) {
 			if (str_contains($path, "/Controllers/")) {
 				$controller = new $name();
@@ -53,8 +50,7 @@ class ClassLoader
 	 *
 	 * @param string $dir - Directory to check for php files
 	 */
-	private static function loadClasses(string $dir) : void
-	{
+	private static function loadClasses(string $dir): void {
 		if (($handle = opendir($dir)) !== false) {
 			while (false !== ($file = readdir($handle))) {
 				if ($file !== "." && $file !== "..") {

@@ -2,8 +2,7 @@
 
 class InsertQuery extends Query
 {
-	public function __construct(string $tableName)
-	{
+	public function __construct(string $tableName) {
 		$this->queryStr = "INSERT INTO `{$tableName}` VALUES (";
 	}
 
@@ -13,8 +12,7 @@ class InsertQuery extends Query
 	 * @param string $columnName Name of the column (has to be same as in DB)
 	 * @param string $value Value for the column
 	 */
-	public function add(string $columnName, string $value) : void
-	{
+	public function add(string $columnName, string $value): void {
 		if ($this->values != null)
 			$this->queryStr .= ",";
 		else
@@ -32,8 +30,7 @@ class InsertQuery extends Query
 	 * @param string|null $idName Name of the ID field
 	 * @return int|string Last insert ID
 	 */
-	public function run(?string $idName = null) : int|string
-	{
+	public function run(?string $idName = null): int|string {
 		$this->queryStr .= ");";
 		return $this->lastInsertId($idName);
 	}

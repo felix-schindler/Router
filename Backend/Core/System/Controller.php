@@ -13,11 +13,10 @@ abstract class Controller
 	/**
 	 * @return string[] All routes the controller listens to
 	 */
-	abstract protected function getRoutes() : array;
-	abstract protected function execute() : void;
+	abstract protected function getRoutes(): array;
+	abstract protected function execute(): void;
 
-	public function initRoutes() : void
-	{
+	public function initRoutes(): void {
 		foreach ($this->getRoutes() as $route)
 			Router::addRoute($route, $this);
 	}
@@ -27,8 +26,7 @@ abstract class Controller
 	 *
 	 * @param string $url Redirectes to this
 	 */
-	protected function redirect(string $url) : void
-	{
+	protected function redirect(string $url): void {
 		header("Location: " . $url);
 		exit;		// Do not execute code after redirect
 	}
@@ -38,8 +36,7 @@ abstract class Controller
 	 *
 	 * @param array<string,string> $params Parameters
 	 */
-	public function runExecute(array $params) : void
-	{
+	public function runExecute(array $params): void {
 		if (($code = $this->accessAllowed()) === 200) {
 			$this->params = $params;
 			$this->execute();
@@ -56,11 +53,10 @@ abstract class Controller
 	 * @param boolean $exact Get the exact value
 	 * @return string|null Value of variable or null if not exists
 	 */
-	protected function getParam(string $var, bool $exact = false) : ?string
-	{
+	protected function getParam(string $var, bool $exact = false): ?string {
 		if (isset($this->params[$var]))
 			if (is_string($this->params[$var]))
-				return $exact ? strval($this->params[$var]) : htmlspecialchars(urldecode(strval($this->params[$var])));
+				return $exact ? strval($this->params[$var]): htmlspecialchars(urldecode(strval($this->params[$var])));
 		return null;
 	}
 
@@ -69,8 +65,7 @@ abstract class Controller
 	 *
 	 * @return string[] Allowed access methods
 	 */
-	protected function getAccessMethods() : array
-	{
+	protected function getAccessMethods(): array {
 		return ["*"];
 	}
 
@@ -79,8 +74,7 @@ abstract class Controller
 	 *
 	 * @return boolean True if it is, false otherwise
 	 */
-	protected function userRequired() : bool
-	{
+	protected function userRequired(): bool {
 		return false;
 	}
 
@@ -89,7 +83,7 @@ abstract class Controller
 	 *
 	 * @return boolean True if it is, false otherwise
 	 */
-	private function accessMethodAllowed() : bool {
+	private function accessMethodAllowed(): bool {
 		if (in_array("*", $this->getAccessMethods()) || in_array(IO::getRequestMethod(), $this->getAccessMethods()))
 			return true;
 		else
@@ -101,8 +95,7 @@ abstract class Controller
 	 *
 	 * @return boolean
 	 */
-	private function authAccessAllowed() : bool
-	{
+	private function authAccessAllowed(): bool {
 		if (!$this->userRequired())
 			return true;
 		else
@@ -114,8 +107,7 @@ abstract class Controller
 	 *
 	 * @return int HTTP status code (200 === OK!)
 	 */
-	private function accessAllowed() : int
-	{
+	private function accessAllowed(): int {
 		if (!$this->accessMethodAllowed())
 			return 405;
 		if (!$this->authAccessAllowed())

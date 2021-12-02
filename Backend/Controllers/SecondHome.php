@@ -2,18 +2,15 @@
 
 class SecondHome extends Controller
 {
-	protected function getRoutes() : array
-	{
+	protected function getRoutes(): array {
 		return ["/article/:id"];
 	}
 
-	protected function getAccessMethods() : array
-	{
+	protected function getAccessMethods(): array {
 		return ["GET"];
 	}
 
-	public function execute() : void
-	{
+	public function execute(): void {
 		$layout = new LayoutView();
 		$layout->addChild(new TextView("Welcome to another route"));
 		if (($id = $this->getParam("id")) !== null) {

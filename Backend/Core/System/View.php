@@ -13,7 +13,7 @@ abstract class View
 	/**
 	 * Renders HTML
 	 */
-	abstract public function render() : void;
+	abstract public function render(): void;
 
 	/**
 	 * Add a child
@@ -21,8 +21,7 @@ abstract class View
 	 * @param View $child A child
 	 * @return View Current view
 	 */
-	public function addChild(View $child) : View
-	{
+	public function addChild(View $child): View {
 		$this->children[] = $child;
 		return $this;
 	}
@@ -30,8 +29,7 @@ abstract class View
 	/**
 	 * Render children
 	 */
-	public function renderChildren(?string $element = null) : void
-	{
+	public function renderChildren(?string $element = null): void {
 		foreach ($this->children as $child) {
 			if ($element === null)
 				$child->render();
@@ -43,8 +41,7 @@ abstract class View
 	/**
 	 * Get rendered HTML as string
 	 */
-	public function __toString() : string
-	{
+	public function __toString(): string {
 		ob_start();
 		$this->render();
 		if (($content = ob_get_clean()) !== false)
