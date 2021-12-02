@@ -1,2 +1,7 @@
 /Backend/Libraries/vendor/
+
+/node_modules/
+/Frontend/
+/.svelte-kit/
+
 .DS_Store
