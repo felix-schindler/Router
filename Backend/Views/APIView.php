@@ -15,8 +15,7 @@ class APIView extends View
 		public string $message = "OK!"
 	){}
 
-	public function render() : void
-	{
+	public function render(): void {
 		header("Content-type: application/json; charset=utf-8");
 		header("Access-Control-Allow-Origin: " . DOMAIN);
 		// header("Access-Control-Allow-Headers: Authorization, Origin, X-Requested-With, Content-Type, Accept");

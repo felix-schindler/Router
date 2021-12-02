@@ -20,8 +20,7 @@ abstract class Model
 	 *
 	 * @param int $id Binds the model object to an ID in the database
 	 */
-	public function __construct(int $id)
-	{
+	public function __construct(int $id) {
 		$this->tableName = get_class($this);
 		$this->id = $id;
 	}
@@ -31,8 +30,7 @@ abstract class Model
 	 *
 	 * @return integer ID of the model
 	 */
-	public function getID() : int
-	{
+	public function getID(): int {
 		return $this->id;
 	}
 
@@ -43,8 +41,7 @@ abstract class Model
 	 * @param string $value New value
 	 * @return bool Update successful or not
 	 */
-	protected function setField(string $field, string $value) : bool
-	{
+	protected function setField(string $field, string $value): bool {
 		return (new Query(
 			"UPDATE `{$this->tableName}` SET `{$field}`=:value WHERE `ID`=:id;",
 			[
@@ -60,8 +57,7 @@ abstract class Model
 	 * @param string $field Field name in the database
 	 * @return string|null The value from the database (could be null)
 	 */
-	protected function getField(string $field) : ?string
-	{
+	protected function getField(string $field): ?string {
 		return (new Query(
 			"SELECT `{$field}` FROM `{$this->tableName}` WHERE `ID`=:id;",
 			[

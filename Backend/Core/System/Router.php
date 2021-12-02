@@ -14,14 +14,13 @@ class Router
 	/**
 	 * The total main function
 	 */
-	public static function Bazinga() : void
-	{
+	public static function 艳颖(): void {
 		// Either access via localhost or HTTPS
-		if (!isset($_SERVER["HTTPS"]) && !(IO::getDomain() === "localhost"))
+		if (!isset($_SERVER["HTTPS"]) && !(IO::domain() === "localhost"))
 			throw new Exception("Only access over HTTPS allowed");
 
 		// Get the route without GET variables
-		$reqRoute = IO::getURL();
+		$reqRoute = IO::path();
 
 		// Run the routers execute method or, if no route matches, run the error
 		if (self::routeExists($reqRoute)) {												// Direct hit
@@ -67,9 +66,9 @@ class Router
 				$routeArr = explode("/", $route);
 				$params = [];
 				for ($i=0; $i < count($routeArr); $i++)
-					if (isset($routeArr[$i][0]) && $routeArr[$i][0] === ":")		// If part of URL is a variable
-						$params[substr($routeArr[$i], 1)] = $reqRouteArr[$i];		// Set as param (this could be a on-liner)
-				self::$routes[$route]->runExecute($params);							// Execute controller for found route
+					if (isset($routeArr[$i][0]) && $routeArr[$i][0] === ":")			// If part of URL is a variable
+						$params[substr($routeArr[$i], 1)] = $reqRouteArr[$i];			// Set as param (this could be a on-liner)
+				self::$routes[$route]->runExecute($params);								// Execute controller for found route
 				return;
 			}
 
@@ -84,8 +83,7 @@ class Router
 	 * @param Controller $con Controller to handle route
 	 * @throws Exception When a route already exists with another controller
 	 */
-	public static function addRoute(string $route, Controller $con) : void
-	{
+	public static function addRoute(string $route, Controller $con): void {
 		$route = self::getRouteSlash($route);  // Fix route if needed to
 		if (self::routeExists($route, $con))
 			throw new Exception("Route " . $route . " already used for " . self::$routes[$route]::class);
@@ -99,8 +97,7 @@ class Router
 	 * @param Controller|null $con Controller to be routed to
 	 * @return boolean True if exists, false otherwise
 	 */
-	private static function routeExists(string $route, ?Controller $con = null) : bool
-	{
+	private static function routeExists(string $route, ?Controller $con = null): bool {
 		if (isset(self::$routes[$route]))
 			if ($con === null)
 				return true;
@@ -115,8 +112,7 @@ class Router
 	 * @param string $route Route
 	 * @return string Route, starting with a '/'
 	 */
-	private static function getRouteSlash(string $route) : string
-	{
+	private static function getRouteSlash(string $route): string {
 		if ($route[0] !== "/")
 			$route = "/" . $route;
 		return $route;
@@ -128,8 +124,7 @@ class Router
 	 * @param string $route Route
 	 * @return string Route, not starting with a '/'
 	 */
-	private static function getRouteNoSlash(string $route) : string
-	{
+	private static function getRouteNoSlash(string $route): string {
 		if ($route === "/")
 			$route = substr($route, 1);
 		return $route;

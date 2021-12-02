@@ -12,8 +12,7 @@ class Utils
 	 * @param string $algo Hashing algorithmn - Standard: SHA256
 	 * @return string Hashed data
 	 */
-	public static function encrypt(string $data, string $algo = "sha256") : string
-	{
+	public static function encrypt(string $data, string $algo = "sha256"): string {
 		return hash($algo, $data);
 	}
 
@@ -23,8 +22,7 @@ class Utils
 	 * @param string $path Filename or URL
 	 * @return string Valid url
 	 */
-	public static function getCdnUrl(string $path) : string
-	{
+	public static function getCdnUrl(string $path): string {
 		if (filter_var($path, FILTER_VALIDATE_URL) === false)
 			return DOMAIN . "/" . CDN_SUFFIX . $path;
 		else
@@ -37,8 +35,7 @@ class Utils
 	 * @param string|null $data Random bytes
 	 * @return string A random uuid
 	 */
-	public static function uuid(?string $data = null) : string
-	{
+	public static function uuid(?string $data = null): string {
 		// Generate 16 bytes (128 bits) of random data or use the data passed into the function.
 		$data ??= random_bytes(16);
 		assert(strlen($data) == 16);

@@ -2,8 +2,7 @@
 
 class LayoutView extends View
 {
-	public function render() : void
-	{
+	public function render(): void {
 ?>
 <!DOCTYPE html>
 <html lang="de">

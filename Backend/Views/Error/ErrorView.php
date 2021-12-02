@@ -8,8 +8,7 @@ class ErrorView extends View
 		public ?string $message = null
 	){}
 
-	public function render() : void
-	{
+	public function render(): void {
 		if ($this->message === null) {
 			$this->message = match($this->code) {
 				100 => 'Continue',

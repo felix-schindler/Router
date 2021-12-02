@@ -8,29 +8,26 @@ abstract class Controller
 	/**
 	 * @var array<string,string>
 	 */
-	private array $params = [];
+	private array $params;
 
 	/**
-	 * @return string[] All routes the controller listens to
+	 * @var string[]
 	 */
-	abstract protected function getRoutes() : array;
-	abstract protected function execute() : void;
-
-	public function initRoutes() : void
-	{
-		foreach ($this->getRoutes() as $route)
-			Router::addRoute($route, $this);
-	}
+	protected array $paths = [];
 
 	/**
-	 * Redirects user to new URL
-	 *
-	 * @param string $url Redirectes to this
+	 * @var string[]
 	 */
-	protected function redirect(string $url) : void
-	{
-		header("Location: " . $url);
-		exit;		// Do not execute code after redirect
+	protected array $methods = ['GET'];
+
+	/**
+	 * Defines wheather user authentication is required
+	 */
+	protected bool $userRequired = false;
+
+	public function initRoutes(): void {
+		foreach ($this->paths as $path)
+			Router::addRoute($path, $this);
 	}
 
 	/**
@@ -38,8 +35,7 @@ abstract class Controller
 	 *
 	 * @param array<string,string> $params Parameters
 	 */
-	public function runExecute(array $params) : void
-	{
+	public function runExecute(array $params): void {
 		if (($code = $this->accessAllowed()) === 200) {
 			$this->params = $params;
 			$this->execute();
@@ -49,6 +45,8 @@ abstract class Controller
 		}
 	}
 
+	abstract protected function execute(): void;
+
 	/**
 	 * Get a param from within the URL
 	 *
@@ -56,57 +54,21 @@ abstract class Controller
 	 * @param boolean $exact Get the exact value
 	 * @return string|null Value of variable or null if not exists
 	 */
-	protected function getParam(string $var, bool $exact = false) : ?string
-	{
+	protected function getParam(string $var, bool $exact = false): ?string {
 		if (isset($this->params[$var]))
 			if (is_string($this->params[$var]))
-				return $exact ? strval($this->params[$var]) : htmlspecialchars(urldecode(strval($this->params[$var])));
+				return $exact ? strval($this->params[$var]): htmlspecialchars(urldecode(strval($this->params[$var])));
 		return null;
 	}
 
 	/**
-	 * Defines which access methods are allowed (wildcard works)
+	 * Redirects user to new URL
 	 *
-	 * @return string[] Allowed access methods
+	 * @param string $url Redirectes to this
 	 */
-	protected function getAccessMethods() : array
-	{
-		return ["*"];
-	}
-
-	/**
-	 * Defines if user authentication is required
-	 *
-	 * @return boolean True if it is, false otherwise
-	 */
-	protected function userRequired() : bool
-	{
-		return false;
-	}
-
-	/**
-	 * Checks if the controller is being accessed with an allowed access method
-	 *
-	 * @return boolean True if it is, false otherwise
-	 */
-	private function accessMethodAllowed() : bool {
-		if (in_array("*", $this->getAccessMethods()) || in_array(IO::getRequestMethod(), $this->getAccessMethods()))
-			return true;
-		else
-			return false;
-	}
-
-	/**
-	 * Checks the user token, if user is required
-	 *
-	 * @return boolean
-	 */
-	private function authAccessAllowed() : bool
-	{
-		if (!$this->userRequired())
-			return true;
-		else
-			return Auth::validateToken();
+	protected function redirect(string $url): never {
+		header('Location: ' . $url);
+		exit;
 	}
 
 	/**
@@ -114,11 +76,10 @@ abstract class Controller
 	 *
 	 * @return int HTTP status code (200 === OK!)
 	 */
-	private function accessAllowed() : int
-	{
-		if (!$this->accessMethodAllowed())
+	private function accessAllowed(): int {
+		if (empty(array_intersect(['*', 'OPTIONS', 'HEAD', IO::method()], $this->methods)))
 			return 405;
-		if (!$this->authAccessAllowed())
+		if ($this->userRequired && Auth::validateToken())
 			return 401;
 		return 200;
 	}

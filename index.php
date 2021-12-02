@@ -23,5 +23,5 @@ require_once("./Backend/Core/ClassLoader.php");				// Load classes
 // require_once("./Backend/Libraries/vendor/autoload.php");	// Composer autoloader
 
 // Application start
-session_start();      // Start PHP session
-Router::Bazinga();    // Run router
+session_start();	// Start PHP session
+Router::艳颖();		// Run router
