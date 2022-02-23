@@ -28,7 +28,7 @@ class Query
 	private bool $success;
 
 	/**
-	 * @var bool Run or not
+	 * @var bool Whether query was executed (run) or not
 	 */
 	private bool $run = false;
 
@@ -74,14 +74,18 @@ class Query
 			$this->execute();
 		if ($this->success) {
 			$id = $this->con->lastInsertId($name);
-			if (is_numeric($id))
-				return intval($id);
-			return $id;
-		} else return 0;
+			if ($id !== false) {
+				if (is_numeric($id))
+					return intval($id);
+				else
+					return $id;
+			}
+		}
+		return 0;
 	}
 
 	/**
-	 * Reads data from database
+	 * Reads data (row by row) from database
 	 * Access returned value via $return["ColumnName"] or via model class
 	 *
 	 * @param Model|null $model Model class to be fetched into
@@ -91,30 +95,26 @@ class Query
 		if (!$this->run)
 			$this->execute();
 		if ($this->success) {
-			if ($model !== null)		// Fetch into a given model class
-				$this->stmt->setFetchMode(PDO::FETCH_INTO, $model);
-			else										// Fetch into an array
-				$this->stmt->setFetchMode(PDO::FETCH_ASSOC);
-
-			if (($result = $this->stmt->fetch()) !== false) return $result;
-			else return null;						// Fetch failed
-		} else return null;						// Query failed
+			if ($model !== null)	$this->stmt->setFetchMode(PDO::FETCH_INTO, $model);	// Fetch into a given model class
+			else					$this->stmt->setFetchMode(PDO::FETCH_ASSOC);		// Fetch into an array
+			if (($result = $this->stmt->fetch()) !== false)
+				return $result;															// Return result (when query was successful)
+		}
+		return null;																	// Fetch or query failed
 	}
 
 	/**
-	 * Reads all data from database
+	 * Reads data (all rows) from database
 	 *
-	 * @return mixed Null if error or no result, array with values otherwise
+	 * @see https://bugs.php.net/bug.php?edit=2&id=44341
+	 * @return array<array<int|string,string>>|null Null on error, array with values (as string!) otherwise (PDO::FETCH_ASSOC)
 	 */
-	public function fetchAll(): mixed {
+	public function fetchAll(): ?array {
 		if (!$this->run)
 			$this->execute();
-		if ($this->success) {
-			if (($result = $this->stmt->fetchAll(PDO::FETCH_ASSOC)) !== false) {
-				if (!empty($result))
-					return $result;
-			}
-		}
+		if ($this->success)
+			if (($result = $this->stmt->fetchAll(PDO::FETCH_ASSOC)) !== false)
+				return $result;
 		return null;
 	}
 
@@ -141,7 +141,7 @@ class Query
 	}
 
 	/**
-	 * Returns wheather the query was successful
+	 * Returns whether the query was successful
 	 *
 	 * @return boolean Query successful
 	 */

@@ -24,6 +24,14 @@ rm .phpstan.neon
 ```
 
 ## Web servers
+
+### Caddy
+Just add the following line to your Caddyfile
+
+```caddy
+try_files {path} /index.php
+```
+
 ### Nginx
 Your domain config needs a rewrite rule, something like this
 

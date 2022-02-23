@@ -48,15 +48,15 @@ class ErrorView extends View
 				503 => 'Service Unavailable',
 				504 => 'Gateway Time-out',
 				505 => 'HTTP Version not supported',
-				default => ''
+				default => 'Undefined error code'
 			};
 		}
 
-		http_response_code($this->code);
+		http_response_code($this->code);									// Set the correct HTML response code
 		if ($this->isAPI) {
-			(new APIView(null, false, $this->code, $this->message))->render();
+			(new APIView([$this->code => $this->message]))->render();		// Render error as JSON
 		} else {
-			echo "<h1>" . $this->code . " - " . $this->message . "</h1>";
+			echo "<h1>" . $this->code . " - " . $this->message . "</h1>";	// Render error as HTML
 			$this->renderChildren();
 		}
 	}

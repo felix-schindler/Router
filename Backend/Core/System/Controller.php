@@ -6,25 +6,33 @@
 abstract class Controller
 {
 	/**
-	 * @var array<string,string>
+	 * @var array<string,string> param name, value
 	 */
 	private array $params;
 
 	/**
-	 * @var string[]
+	 * @var string[] Paths the controller listens to
 	 */
 	protected array $paths = [];
 
 	/**
-	 * @var string[]
+	 * @var string[] Allowed methods to access controller
 	 */
 	protected array $methods = ['GET'];
 
 	/**
-	 * Defines wheather user authentication is required
+	 * @var string[] Required POST variables
+	 */
+	protected array $reqVar = [];
+
+	/**
+	 * Defines whether user authentication is required
 	 */
 	protected bool $userRequired = false;
 
+	/**
+	 * Adds the paths to the router
+	 */
 	public function initRoutes(): void {
 		foreach ($this->paths as $path)
 			Router::addRoute($path, $this);
@@ -36,15 +44,17 @@ abstract class Controller
 	 * @param array<string,string> $params Parameters
 	 */
 	public function runExecute(array $params): void {
-		if (($code = $this->accessAllowed()) === 200) {
+		if (($code = $this->checkAccess()) === 200) {
 			$this->params = $params;
 			$this->execute();
 		} else {
 			(new ErrorView($code))->render();
-			return;
 		}
 	}
 
+	/**
+	 * Main method of the controller
+	 */
 	abstract protected function execute(): void;
 
 	/**
@@ -76,11 +86,15 @@ abstract class Controller
 	 *
 	 * @return int HTTP status code (200 === OK!)
 	 */
-	private function accessAllowed(): int {
+	private function checkAccess(): int {
 		if (empty(array_intersect(['*', 'OPTIONS', 'HEAD', IO::method()], $this->methods)))
 			return 405;
-		if ($this->userRequired && Auth::validateToken())
-			return 401;
+		if ($this->userRequired)
+			if (!Auth::validateToken())
+				return 401;
+		foreach ($this->reqVar as $var)
+			if (IO::POST($var) === null)
+				return 400;
 		return 200;
 	}
 }
