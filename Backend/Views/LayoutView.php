@@ -5,7 +5,7 @@ class LayoutView extends View
 	public function render(): void {
 ?>
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,8 +28,8 @@ class LayoutView extends View
 	<header>
 		<a href="/">Home</a>
 		<a href="/article/2">Other one</a>
-		<a href="/user/2">Should not be called</a>
-		<a href="/api">API</a>
+		<a href="/user/2">All variables</a>
+		<a href="/api/sample">API</a>
 		<a href="/err">Error</a>
 	</header>
 

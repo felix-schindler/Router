@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 // Display errors when debug is set
 /* if (isset($_GET["DEBUG"])) {
 	ini_set('display_errors', '1');
@@ -15,13 +17,12 @@ define("DB_USER", "user");
 define("DB_PASS", "pass");
 
 define("TITLE", "Sample");									// Title for website
-define("DOMAIN", "https://blog.schindlerfelix.de");			// Hosted on this domain
-define("CDN_DOMAIN", "https://cdn.schindlerfelix.de");		// Domain of the CDN
-define("CDN_SUFFIX", "sample/");							// https://cdn.schindlerfelix.de/blog/
+define("DOMAIN", "https://schindlerfelix.de");				// Hosted on this domain
 
 require_once("./Backend/Core/ClassLoader.php");				// Load classes
 // require_once("./Backend/Libraries/vendor/autoload.php");	// Composer autoloader
 
 // Application start
-session_start();	// Start PHP session
-Router::艳颖();		// Run router
+ClassLoader::파람();	// Run the class loader
+Localize::君の名は();	// Initialize multi language support
+Router::艳颖();			// Run router

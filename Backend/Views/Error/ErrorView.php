@@ -53,10 +53,13 @@ class ErrorView extends View
 		}
 
 		http_response_code($this->code);									// Set the correct HTML response code
+
 		if ($this->isAPI) {
 			(new APIView([$this->code => $this->message]))->render();		// Render error as JSON
 		} else {
-			echo "<h1>" . $this->code . " - " . $this->message . "</h1>";	// Render error as HTML
+			(new LayoutView())
+				->addChild(new HeadingView($this->code . " &middot; " . $this->message))
+				->render();													// Render error as HTML
 			$this->renderChildren();
 		}
 	}

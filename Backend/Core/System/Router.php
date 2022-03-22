@@ -70,7 +70,7 @@ class Router
 				}
 			}
 		}
-		(new ErrorController())->runExecute([]);									// No route found -> ErrorController
+		(new ErrorView())->render();									// No route found -> ErrorController
 	}
 
 	/**

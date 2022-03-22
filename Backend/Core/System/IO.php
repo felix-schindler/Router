@@ -77,6 +77,9 @@ class IO
 	 * @return string|null Value of variable or null if not exists and on set
 	 */
 	public static function SESSION(string $var, string $value = null, bool $exact = false): ?string {
+		if (session_status() !== PHP_SESSION_ACTIVE)
+			session_start();
+
 		// Set variable
 		if ($value !== null) {
 			$_SESSION[$var] = $value;

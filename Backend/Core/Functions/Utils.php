@@ -17,19 +17,6 @@ class Utils
 	}
 
 	/**
-	 * Takes a path, looks if it is a url, if not -> makes a CDN URL out of it
-	 *
-	 * @param string $path Filename or URL
-	 * @return string Valid url
-	 */
-	public static function getCdnUrl(string $path): string {
-		if (filter_var($path, FILTER_VALIDATE_URL) === false)
-			return DOMAIN . "/" . CDN_SUFFIX . $path;
-		else
-			return $path;
-	}
-
-	/**
 	 * Generates a random uuid (Version 4)
 	 *
 	 * @param string|null $data Random bytes

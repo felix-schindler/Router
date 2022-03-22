@@ -43,6 +43,3 @@ class ClassLoader
 		}
 	}
 }
-
-// Run the class loader
-ClassLoader::파람();
