@@ -27,5 +27,4 @@ require_once("./Backend/Core/ClassLoader.php");				// Load classes
 
 // Application start
 ClassLoader::파람();	// Run the class loader
-Localize::君の名は();	// Initialize multi language support
 Router::艳颖();			// Run router
