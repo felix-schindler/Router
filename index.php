@@ -2,6 +2,9 @@
 
 declare(strict_types = 1);
 
+// $GLOBALS['start'] = microtime(true);		// Stop execution time
+// echo '<p>[Controller] Execution time router: ' . microtime(true) - $GLOBALS['start'] . ' seconds</p>';
+
 // Display errors when debug is set
 /* if (isset($_GET["DEBUG"])) {
 	ini_set('display_errors', '1');

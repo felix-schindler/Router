@@ -23,7 +23,7 @@ class Localize {
 
 		if (!empty(($matches = array_intersect(self::$supported, $accepted)))) {
 			self::$locale = array_values($matches)[0];
-			echo "Language set to '" . self::$locale . "'";
+			echo "<p>[Localize] Language set to '" . self::$locale . "'</p>";
 		}
 
 		// if (($locale = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE'])) !== false) {
@@ -32,7 +32,7 @@ class Localize {
 
 		// TODO: Find best supported language : 'en'
 		// TODO: If language is supported
-		require_once('.' . DIRECTORY_SEPARATOR . 'Locale' . DIRECTORY_SEPARATOR . self::$locale . '.php');
+		require_once(__DIR__ . DIRECTORY_SEPARATOR . 'Locale' . DIRECTORY_SEPARATOR . self::$locale . '.php');
 	}
 
 	/**

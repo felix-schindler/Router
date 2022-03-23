@@ -28,7 +28,7 @@ rm .phpstan.neon
 ### Caddy
 Just add the following line to your Caddyfile
 
-```caddy
+```nginx
 try_files {path} /index.php
 ```
 
