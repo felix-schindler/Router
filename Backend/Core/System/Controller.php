@@ -48,7 +48,7 @@ abstract class Controller
 			$this->params = $params;
 			$this->execute();
 		} else {
-			(new ErrorView($code))->render();
+			(new ErrorView($code, str_contains(IO::path(), '/api/')))->render();
 		}
 	}
 
@@ -87,7 +87,7 @@ abstract class Controller
 	 * @return int HTTP status code (200 === OK!)
 	 */
 	private function checkAccess(): int {
-		header('Access-Control-Allow-Methods: ' . implode(', ', array_merge($this->methods, ['OPTIONS', 'HEAD'])));
+		header('Access-Control-Allow-Methods: ' . implode(', ', array_merge(['OPTIONS', 'HEAD'], $this->methods)));
 		if (empty(array_intersect(['*', 'OPTIONS', 'HEAD', IO::method()], $this->methods)))
 			return 405;
 		if ($this->userRequired)
