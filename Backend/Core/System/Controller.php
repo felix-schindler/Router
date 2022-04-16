@@ -61,13 +61,11 @@ abstract class Controller
 	 * Get a param from within the URL
 	 *
 	 * @param string $var Name of variable
-	 * @param boolean $exact Get the exact value
 	 * @return string|null Value of variable or null if not exists
 	 */
-	protected function getParam(string $var, bool $exact = false): ?string {
-		if (isset($this->params[$var]))
-			if (is_string($this->params[$var]))
-				return $exact ? strval($this->params[$var]): htmlspecialchars(urldecode(strval($this->params[$var])));
+	protected function param(string $var): ?string {
+		if (isset($this->params[$var]) && is_string($this->params[$var]))
+			return htmlspecialchars(urldecode(strval($this->params[$var])));
 		return null;
 	}
 
