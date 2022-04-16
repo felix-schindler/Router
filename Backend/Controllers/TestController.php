@@ -2,20 +2,27 @@
 
 class TestController extends Controller
 {
-	protected array $paths = ['/test'];
+	protected array $paths = ['/test', '/test/:id'];
+	protected array $methods = ['*'];
 
 	protected function execute(): void
 	{
-		print_r($_GET["arr"]);
-		echo "<br>";
-		print_r(IO::query("arr"));
+		// Query
+		echo "PARAM<br>";
+		echo $this->param("id") . "<br>";
+		echo $this->param("not_defined") ?? "not set" . "<br>";
 
-		?>
-		<form action="/test" method="get">
-			<input type="checkbox" name="arr[]" value="Check 1">
-			<input type="checkbox" name="arr[]" value="Check 2">
-			<input type="submit">
-		</form>
-		<?php
+		echo "<br>QUERY<br>";
+		echo IO::query("str") . "<br>";			// String
+		print_r(IO::query("arr"));				// Array
+		echo "<br>";
+		echo IO::query("not_defined") ?? "not set" . "<br>";	// Not set
+
+		// Body
+		echo "<br>BODY<br>";
+		echo IO::body("str") . "<br>";
+		print_r(IO::body("arr"));
+		echo "<br>";
+		echo IO::body("not_defined") ?? "not set" . "<br>";
 	}
 }

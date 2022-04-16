@@ -71,68 +71,6 @@ class IO
 		return null;
 	}
 
-	/**
-	 * Get a $_GET variable
-	 *
-	 * @param string $var Name of variable
-	 * @param boolean $exact Get the exact value
-	 * @return string|null Value of variable or null if not exists
-	 */
-	public static function GET(string $var, bool $exact = false): ?string {
-		if (isset($_GET[$var]))
-			if (is_string($_GET[$var]))
-				return $exact ? strval($_GET[$var]): htmlspecialchars(urldecode(strval($_GET[$var])));
-		return null;
-	}
-
-	/**
-	 * Get a $_POST variable
-	 *
-	 * @param string $var Name of variable
-	 * @param boolean $exact Get the exact value
-	 * @return array<string,mixed>|string|null Value of variable or null if not exists
-	 */
-	public static function POST(string $var, bool $exact = false): array|string|null {
-		if (isset($_POST[$var]))
-			if (is_string($_POST[$var]))
-				return $exact ? strval($_POST[$var]): htmlspecialchars(urldecode(strval($_POST[$var])));
-			elseif (is_array($_POST[$var]))
-				return $_POST[$var];
-		elseif (($json = json_decode(file_get_contents('php://input'), true))[$var])
-			if (is_string($json[$var]))
-				return $exact ? strval($json[$var]): htmlspecialchars(urldecode(strval($json[$var])));
-			elseif (is_array($json[$var]))
-				return $json[$var];
-		return null;
-	}
-
-
-	/**
-	 * Get a PUT variables
-	 *
-	 * @param string $var Name of variable
-	 * @param boolean $exact Get the exact value
-	 * @return array<string,mixed>|string|null Value of variable or null if not exists
-	 */
-	public static function PUT(string $var, bool $exact = false): array|string|null {
-		$data = file_get_contents('php://input');
-		if (($json = json_decode($data, true))[$var])
-			if (is_string($json[$var]))
-				return $exact ? strval($json[$var]): htmlspecialchars(urldecode(strval($json[$var])));
-			elseif (is_array($json[$var]))
-				return $json[$var];
-		else {		// x-www-form-encoded
-			$arr = [];
-			foreach (explode('&', $data) as $chunk) {
-				$param = explode("=", $chunk);
-				$arr[urldecode($param[0])] = urldecode($param[1]);
-			}
-			if (is_string($arr[$var]))
-				return $exact ? strval($arr[$var]): htmlspecialchars(urldecode(strval($arr[$var])));
-			// TODO: is_array()
-		}
-		return null;
-	}
 
 	/**
 	 * Set or get a $_SESSION variable

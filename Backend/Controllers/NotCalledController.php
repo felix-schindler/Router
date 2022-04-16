@@ -6,8 +6,8 @@ class NotCalledController extends Controller
 
 	public function execute(): void {
 		$layout = new LayoutView();
-		$layout->addChild(new TextView($this->getParam("type")));
-		if (($id = $this->getParam("id")) !== null) {
+		$layout->addChild(new TextView($this->param("type")));
+		if (($id = $this->param("id")) !== null) {
 			$layout->addChild(new TextView("ID: " . $id));
 		}
 

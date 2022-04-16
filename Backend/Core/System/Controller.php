@@ -21,7 +21,7 @@ abstract class Controller
 	protected array $methods = ['GET'];
 
 	/**
-	 * @var string[] Required POST variables
+	 * @var string[] Required variables in the body of the request
 	 */
 	protected array $reqVar = [];
 
@@ -92,7 +92,7 @@ abstract class Controller
 			if (!Auth::validateToken())
 				return 401;
 		foreach ($this->reqVar as $var)
-			if (IO::POST($var) === null)
+			if (IO::body($var) === null)
 				return 400;
 		return 200;
 	}
