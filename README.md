@@ -1,10 +1,6 @@
 # Router
 An amazing dependency-free router in and for PHP so you can use readable routes like "/u/:username" instead of ugly ones like "/user.php?username=" and have an awesome MVC, object-oriented design pattern. With this you have the choice to have Svelte frontend and PHP backend at once, for easier deployment.
 
-## In action
-- To see it in action with only PHP (branch: main), click [here](https://blog.schindlerfelix.de).
-- To see it in action with Svelte (branch: svelte), click [here](https://social.schindlerfelix.de).
-
 ## Getting started
 1. Clone GitHub Repo - `git clone git@github.com:felix-schindler/Router.git && cd Router`
 2. __OPTIONAL__: Install composer dependencies - `cd Backend/Libraries && composer install`
@@ -29,6 +25,7 @@ rm .phpstan.neon
 Just add the following line to your Caddyfile
 
 ```nginx
+file_server
 try_files {path} /index.php
 ```
 

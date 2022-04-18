@@ -12,23 +12,23 @@ class LayoutView extends View
 	<title>Title</title>
 	<base href="/">
 	<style>
-		:root { --on-bg: #000; --bg: #fff; }
-		@media screen and (prefers-color-scheme: dark) {
-			:root { --on-bg: #fff; --bg: #151515; }
-		}
+		:root {
+			--on-bg: #000;
+			--bg: #fff;
 
-		html, body {
+			color-scheme: dark light;
 			font-family: system-ui;
 			color: var(--on-bg);
 			background-color: var(--bg);
 		}
+		@media screen and (prefers-color-scheme: dark) { :root { --on-bg: #fff; --bg: #151515; } }
 	</style>
 </head>
 <body>
 	<header>
 		<a href="/">Home</a>
 		<a href="/article/2">Other one</a>
-		<a href="/user/2">All variables</a>
+		<a href="/article/321">Should not be called</a>
 		<a href="/api/sample">API</a>
 		<a href="/err">Error</a>
 	</header>
