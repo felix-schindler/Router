@@ -73,6 +73,7 @@ abstract class Controller
 	 * Redirects user to new URL
 	 *
 	 * @param string $url Redirectes to this
+	 * @return never No code execution after this
 	 */
 	protected function redirect(string $url): never {
 		header('Location: ' . $url);

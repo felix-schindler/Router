@@ -22,9 +22,11 @@ define("DB_PASS", "pass");
 define("TITLE", "Sample");									// Title for website
 define("DOMAIN", "https://schindlerfelix.de");				// Hosted on this domain
 
+// Require autoloaders
 require_once("./Backend/Core/ClassLoader.php");				// Load classes
 // require_once("./Backend/Libraries/vendor/autoload.php");	// Composer autoloader
 
 // Application start
+// session_start();		// Start PHP Session
 ClassLoader::파람();	// Run the class loader
 Router::艳颖();			// Run router

@@ -78,11 +78,12 @@ class IO
 	 * @param string $var Name of variable
 	 * @param string|null $value Value of variable - If this is set not null -> get to set
 	 * @param boolean $exact Get the exact value
+	 * @throws Error When there is no session
 	 * @return string|null Value of variable or null if not exists and on set
 	 */
 	public static function SESSION(string $var, string $value = null, bool $exact = false): ?string {
 		if (session_status() !== PHP_SESSION_ACTIVE)
-			session_start();
+			throw new Error("You have to start the session first");
 
 		// Set variable
 		if ($value !== null) {
