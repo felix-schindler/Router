@@ -92,9 +92,10 @@ abstract class Controller
 		if ($this->userRequired)
 			if (!Auth::validateToken())
 				return 401;
-		foreach ($this->reqVar as $var)
-			if (IO::body($var) === null)
-				return 400;
+		if (!in_array(IO::method(), ['GET', 'HEAD', 'DELETE', 'OPTIONS']))
+			foreach ($this->reqVar as $var)
+				if (IO::body($var) === null)
+					return 400;
 		return 200;
 	}
 }
