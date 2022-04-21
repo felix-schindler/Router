@@ -1,52 +1,39 @@
 # Router
-An amazing dependency-free router in and for PHP so you can use readable routes like "/u/:username" instead of ugly ones like "/user.php?username=" and have an awesome MVC, object-oriented design pattern. With this you have the choice to have Svelte frontend and PHP backend at once, for easier deployment.
+
+## Why use this?
+
+- Dependency-free
+- MVC
+- No Models included, use PDO with the [Query class](/Backend/Core/Data/Query.php)
+- Use readable urls like "/u/:name" instead of things like "user.php?name="
 
 ## Getting started
+
 1. Clone GitHub Repo - `git clone git@github.com:felix-schindler/Router.git && cd Router`
-2. __OPTIONAL__: Install composer dependencies - `cd Backend/Libraries && composer install`
-3. That's it. Run `php -S localhost:8000` or throw it on a web server
+2. Run `php -S localhost:8080` or throw it on a web server
 
 ## Requirements
+
 - [PHP 8.1](https://www.php.net) with [PDO](https://www.php.net/manual/de/book.pdo.php)
 - __OPTIONAL__: [Composer](https://getcomposer.org)
 
 ## Remove junk
-### Composer
-This router is dependency-free but has composer support. The only composer package installed is [PHPStan](https://phpstan.org), for code checks.
-If you do not need this, you can simply remove these files with the follwing commands:
+
+This router is dependency-free. The only composer package installed is [PHPStan](https://phpstan.org), for static code analysis. Remove composer with
+
 ```zsh
 rm -rf Backend/Libraries
 rm .phpstan.neon
 ```
 
-## Web servers
+and remove the autoloader from the `index.php` file.
 
-### Caddy
-Just add the following line to your Caddyfile
+## Deploy
 
-```nginx
-file_server
-try_files {path} /index.php
-```
+Make sure your web server:
 
-### Nginx
-Your domain config needs a rewrite rule, something like this
+- Supports PHP
+- Serves files
+- Then routes through index.php
 
-```nginx
-location / {
-  try_files $uri @rewrites;
-}
-
-location @rewrites {
-  rewrite ^/(.*)$ /index.php?param=$1;
-}
-```
-
-### Apache2
-Using Apache2 you'll need a .htaccess file looking something like this, to route everything through the `index.php` file, the main entry point.
-
-```apacheconf
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.php [QSA,L]
-```
+Works on: Apache, Nginx, [Caddy](https://caddyserver.com)
