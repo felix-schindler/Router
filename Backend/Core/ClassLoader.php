@@ -8,7 +8,7 @@ class ClassLoader
 	/**
 	 * Currently loaded classes
 	 *
-	 * @var array<string,string> - Class name, Path
+	 * @var array<string,string> Class name, File path
 	 */
 	private static array $classes = [];
 

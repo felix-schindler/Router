@@ -8,7 +8,7 @@ class InsertQuery extends Query
 	 * @param string $tableName Name of the table in the databse
 	 */
 	public function __construct(string $tableName) {
-		$this->queryStr = "INSERT INTO `{$tableName}` VALUES (";
+		parent::__construct("INSERT INTO `{$tableName}` VALUES (", []);
 	}
 
 	/**
@@ -33,7 +33,7 @@ class InsertQuery extends Query
 	 * Executes the query
 	 *
 	 * @param string|null $idName Name of the ID field
-	 * @return int|string Last insert ID
+	 * @return int|string Last insert ID or 0 on failure
 	 */
 	public function run(?string $idName = null): int|string {
 		$this->queryStr .= ");";
