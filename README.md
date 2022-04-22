@@ -5,7 +5,7 @@
 - Dependency-free
 - MVC
 - No Models included, use PDO with the [Query class](/Backend/Core/Data/Query.php)
-- Use readable urls like "/u/:name" instead of things like "user.php?name="
+- Use readable urls like "/u/:user" instead of things like "user.php?name="
 
 ## Getting started
 
