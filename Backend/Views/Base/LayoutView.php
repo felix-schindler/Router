@@ -21,6 +21,7 @@ class LayoutView extends View
 			color: var(--on-bg);
 			background-color: var(--bg);
 		}
+		footer { text-align: center }
 		@media screen and (prefers-color-scheme: dark) { :root { --on-bg: #fff; --bg: #151515; } }
 	</style>
 </head>
@@ -38,7 +39,7 @@ class LayoutView extends View
 	</main>
 
 	<footer>
-
+		<p>This page was generated in <?=microtime(true) - $GLOBALS['start']?> seconds</p>
 	</footer>
 </body>
 </html>
