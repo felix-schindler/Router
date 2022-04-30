@@ -5,7 +5,7 @@ class APIController extends Controller
 	protected array $paths = ['/api/sample'];
 	protected array $methods = ['POST'];
 
-	public function execute(): void {
+	protected function execute(): void {
 		(new APIView())->render();
 	}
 }

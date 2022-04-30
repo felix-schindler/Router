@@ -4,7 +4,7 @@ class NotCalledController extends Controller
 {
 	protected array $paths = ['/:type/:id'];
 
-	public function execute(): void {
+	protected function execute(): void {
 		$layout = new LayoutView();
 		$layout->addChild(new HeadingView("Doesn't get called when only using links from the LayoutView"));
 		$layout->addChild(new TextView("Go and work on the Router!"));
