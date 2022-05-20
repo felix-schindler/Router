@@ -21,7 +21,9 @@ abstract class Controller
 	protected array $methods = ['GET'];
 
 	/**
-	 * @var string[] Required variables in the body of the request
+	 * @var array<string,string[]> Required variables in the body of the request
+	 *
+	 * defined like this: ['POST' => ['param1', 'param2'], 'PATCH' => ['param3']]
 	 */
 	protected array $reqVar = [];
 
@@ -86,14 +88,15 @@ abstract class Controller
 	 * @return int HTTP status code (200 === OK!)
 	 */
 	private function checkAccess(): int {
+		$method = IO::method();
 		header('Access-Control-Allow-Methods: ' . implode(', ', array_merge(['OPTIONS', 'HEAD'], $this->methods)));
-		if (empty(array_intersect(['*', 'OPTIONS', 'HEAD', IO::method()], $this->methods)))
+		if (empty(array_intersect(['*', 'OPTIONS', 'HEAD', $method], $this->methods)))
 			return 405;
 		if ($this->userRequired)
 			if (!Auth::validateToken())
 				return 401;
-		if (!in_array(IO::method(), ['GET', 'HEAD', 'DELETE', 'OPTIONS']))
-			foreach ($this->reqVar as $var)
+		if (!in_array($method, ['GET', 'HEAD', 'DELETE', 'OPTIONS']))
+			foreach ($this->reqVar[$method] as $var)
 				if (IO::body($var) === null)
 					return 400;
 		return 200;
