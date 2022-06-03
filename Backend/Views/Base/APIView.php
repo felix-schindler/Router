@@ -10,7 +10,7 @@ class APIView extends View
 	){}
 
 	public function render(): void {
-		header("Content-type: application/json; charset=utf-8");
+		header("Content-Type: application/json; charset=utf-8");
 		header("Access-Control-Allow-Origin: " . DOMAIN);
 		// header("Access-Control-Allow-Headers: Authorization, Origin, X-Requested-With, Content-Type, Accept");
 		// header("Access-Control-Max-Age: 86400");

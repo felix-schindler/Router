@@ -96,11 +96,11 @@ class Query
 			$this->execute();
 		if ($this->success) {
 			if ($model !== null)	$this->stmt->setFetchMode(PDO::FETCH_INTO, $model);	// Fetch into a given model class
-			else					$this->stmt->setFetchMode(PDO::FETCH_ASSOC);		// Fetch into an array
+			else									$this->stmt->setFetchMode(PDO::FETCH_ASSOC);				// Fetch into an array
 			if (($result = $this->stmt->fetch()) !== false)
 				return $result;															// Return result (when query was successful)
 		}
-		return null;																	// Fetch or query failed
+		return null;																		// Fetch or query failed
 	}
 
 	/**

@@ -162,11 +162,21 @@ class IO
 
 	/**
 	 * Returns the request method
-	 * @return string The request method
+	 * @return string HTTP request method
 	 */
 	public static function method(): string {
 		if (isset($_SERVER["REQUEST_METHOD"]))
 			return $_SERVER["REQUEST_METHOD"];
 		throw new Exception("No request method set");
+	}
+
+	/**
+	* Returns the HTTP 'Accept' header
+	* @return string HTTP 'Accept' header
+	*/
+	public static function accept(): string {
+		if (isset($_SERVER['HTTP_ACCEPT']))
+			return explode(",", $_SERVER['HTTP_ACCEPT'])[0];
+		throw new Exception("No accept header set");
 	}
 }
