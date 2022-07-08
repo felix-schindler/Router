@@ -45,7 +45,7 @@ class IO
 			if ($inputData != null) {
 				$arr = [];
 				foreach (explode('&', $inputData) as $chunk) {
-					$param = explode("=", $chunk);
+					$param = explode('=', $chunk);
 					$key = urldecode($param[0]);
 					if (isset($param[1])) {
 						if (!isset($arr[$key]))
@@ -83,7 +83,7 @@ class IO
 	 */
 	public static function SESSION(string $var, string $value = null, bool $exact = false): ?string {
 		if (session_status() !== PHP_SESSION_ACTIVE)
-			throw new Error("You have to start the session first");
+			throw new Error('You have to start the session first');
 
 		// Set variable
 		if ($value !== null) {
@@ -108,7 +108,7 @@ class IO
 	 */
 	public static function COOKIE(string $var, ?string $value = null, int $lifetime = 2592000, bool $exact = false): ?string {
 		if ($value !== null) {
-			setcookie($var, $value, time()+$lifetime, "/", self::domain(), true);
+			setcookie($var, $value, time()+$lifetime, '/', self::domain(), true);
 			return null;
 		}
 
@@ -135,9 +135,9 @@ class IO
 	 * @return string The domain (URL without HTTP(S)://)
 	 */
 	public static function domain(): string {
-		if (isset($_SERVER["SERVER_NAME"]) && $_SERVER["SERVER_NAME"] != null)
-			return $_SERVER["SERVER_NAME"];
-		throw new Exception("Not running on a server");
+		if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] != null)
+			return $_SERVER['SERVER_NAME'];
+		throw new Exception('Not running on a server');
 	}
 
 	/**
@@ -147,9 +147,9 @@ class IO
 	 * @throws Exception When no request is set
 	 */
 	public static function path(): string {
-		if (isset($_SERVER["REQUEST_URI"]) && $_SERVER["REQUEST_URI"] != null)
-			return explode("?", $_SERVER["REQUEST_URI"], 2)[0];
-		throw new Exception("No request");
+		if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] != null)
+			return explode('?', $_SERVER['REQUEST_URI'], 2)[0];
+		throw new Exception('No request');
 	}
 
 	/**
@@ -165,9 +165,9 @@ class IO
 	 * @return string HTTP request method
 	 */
 	public static function method(): string {
-		if (isset($_SERVER["REQUEST_METHOD"]))
-			return $_SERVER["REQUEST_METHOD"];
-		throw new Exception("No request method set");
+		if (isset($_SERVER['REQUEST_METHOD']))
+			return $_SERVER['REQUEST_METHOD'];
+		throw new Exception('No request method set');
 	}
 
 	/**
@@ -176,7 +176,7 @@ class IO
 	*/
 	public static function accept(): string {
 		if (isset($_SERVER['HTTP_ACCEPT']))
-			return explode(",", $_SERVER['HTTP_ACCEPT'])[0];
-		throw new Exception("No accept header set");
+			return explode(',', $_SERVER['HTTP_ACCEPT'])[0];
+		throw new Exception('No accept header set');
 	}
 }

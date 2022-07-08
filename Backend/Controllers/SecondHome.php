@@ -6,9 +6,9 @@ class SecondHome extends Controller
 
 	protected function execute(): void {
 		$layout = new LayoutView();
-		$layout->addChild(new TextView("Welcome to another route"));
-		if (($id = $this->param("id")) !== null) {
-			$layout->addChild(new TextView("ID: " . $id));
+		$layout->addChild(new TextView('Welcome to another route'));
+		if (($id = $this->param('id')) !== null) {
+			$layout->addChild(new TextView("ID: $id"));
 		}
 
 		$layout->render();

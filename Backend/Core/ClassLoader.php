@@ -19,8 +19,8 @@ class ClassLoader
 	public static function 파람(): void {
 		$files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Backend'), RecursiveIteratorIterator::SELF_FIRST);
 		foreach($files as $file)
-			if (pathinfo($file->getFileName(), PATHINFO_EXTENSION) == "php" && !str_contains($file->getPathname(), DIRECTORY_SEPARATOR . 'Libraries' . DIRECTORY_SEPARATOR . 'vendor'))
-				self::$classes[str_replace(".php", "", $file->getFileName())] = $file->getPathname();
+			if (pathinfo($file->getFileName(), PATHINFO_EXTENSION) == 'php' && !str_contains($file->getPathname(), DIRECTORY_SEPARATOR . 'Libraries' . DIRECTORY_SEPARATOR . 'vendor'))
+				self::$classes[str_replace('.php', '', $file->getFileName())] = $file->getPathname();
 
 		spl_autoload_register(function($className): void {
 			if (isset(self::$classes[$className]) && file_exists(self::$classes[$className]))
@@ -35,7 +35,7 @@ class ClassLoader
 	 */
 	private static function initControllers(): void {
 		foreach (self::$classes as $name => $path) {
-			if (str_contains(str_replace('\\', '/', $path), "/Controllers/")) {		// Replace \ with / for windows users
+			if (str_contains(str_replace('\\', '/', $path), '/Controllers/')) {		// Replace \ with / for windows users
 				$controller = new $name();
 				if ($controller instanceof Controller)
 					$controller->initRoutes();

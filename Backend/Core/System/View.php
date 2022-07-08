@@ -34,7 +34,7 @@ abstract class View
 			if ($element === null)
 				$child->render();
 			else
-				echo "<".$element.">" . $child->__toString() . "</".$element.">";
+				echo "<$element>{$child->__toString()}</$element>";
 		}
 	}
 
@@ -46,6 +46,6 @@ abstract class View
 		$this->render();
 		if (($content = ob_get_clean()) !== false)
 			return $content;
-		return "";
+		return '';
 	}
 }

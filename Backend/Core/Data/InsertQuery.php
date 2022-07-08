@@ -19,10 +19,10 @@ class InsertQuery extends Query
 	 */
 	public function add(string $columnName, string $value): void {
 		if ($this->values != null)
-			$this->queryStr .= ",";
+			$this->queryStr .= ',';
 		else
 			$this->values = [];
-		$placeholder = ":" . strtolower($columnName);
+		$placeholder = ":{strtolower($columnName)}";
 		$this->queryStr .= " `$columnName`=";
 		$this->queryStr .= $placeholder;
 

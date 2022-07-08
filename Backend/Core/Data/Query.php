@@ -39,7 +39,7 @@ class Query
 	 * @param string $queryStr Query as a string
 	 * @param array<string|int,string|float>|null $values Values for placeholders
 	 */
-	public function __construct($queryStr = "", ?array $values = null) {
+	public function __construct($queryStr = '', ?array $values = null) {
 		$this->queryStr = $queryStr;
 		$this->values = $values;
 		$this->con = new PDO('mysql:host='.DB_HOST.'; dbname='.DB_NAME, DB_USER, DB_PASS);

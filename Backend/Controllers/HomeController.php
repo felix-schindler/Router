@@ -6,7 +6,7 @@ class HomeController extends Controller
 
 	protected function execute(): void {
 		$layout = new LayoutView();
-		$layout->addChild(new HeadingView("Home"));
+		$layout->addChild(new HeadingView('Home'));
 		$layout->render();
 	}
 }

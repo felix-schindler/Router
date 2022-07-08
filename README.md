@@ -4,8 +4,8 @@
 
 - Dependency-free
 - MVC
-- No Models included, use PDO with the [Query class](/Backend/Core/Data/Query.php)
-- Use readable urls like "/u/:user" instead of things like "user.php?name="
+- No Models included, but you use PDO with the [Query class](/Backend/Core/Data/Query.php)
+- Easy to use readable URLs like "/u/:name" instead of things like "user.php?name="
 
 ## Getting started
 
@@ -34,6 +34,6 @@ Make sure your web server:
 
 - Supports PHP
 - Serves files
-- Then routes through index.php
+- Routes through index.php (if the path doesn't match a file)
 
 Works on: Apache, Nginx, [Caddy](https://caddyserver.com)
