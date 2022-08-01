@@ -1,0 +1,5 @@
+{
+	"phpstan.enabled": true,
+	"phpstan.binPath": "Backend/Libraries/vendor/bin/phpstan",
+	"phpstan.configFile": ".phpstan.neon"
+}
