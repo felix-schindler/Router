@@ -141,9 +141,7 @@ class IO
 	}
 
 	/**
-	 * Returns the currently Requested URL
-	 *
-	 * @return string The requested path
+	 * @return string Currently requested path
 	 * @throws Exception When no request is set
 	 */
 	public static function path(): string {
@@ -153,15 +151,13 @@ class IO
 	}
 
 	/**
-	 * Returns the full URL with protocol and request uri
-	 * @return string The full URL with protocol
+	 * @return string Full URL with protocol and request uri
 	 */
 	public static function fullURL(): string {
 		return 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	}
 
 	/**
-	 * Returns the request method
 	 * @return string HTTP request method
 	 */
 	public static function method(): string {
@@ -171,7 +167,6 @@ class IO
 	}
 
 	/**
-	* Returns the HTTP 'Accept' header
 	* @return string HTTP 'Accept' header
 	*/
 	public static function accept(): string {

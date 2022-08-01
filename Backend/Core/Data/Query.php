@@ -55,7 +55,7 @@ class Query
 	}
 
 	/**
-	 * Returns the current query string
+	 * Query string getter
 	 *
 	 * @return string Current query
 	 */
@@ -130,7 +130,7 @@ class Query
 	}
 
 	/**
-	 * Counts the effected rows by the last query and returns them
+	 * Counts the effected rows of the last query
 	 *
 	 * @return integer Effected rows
 	 */
@@ -141,9 +141,7 @@ class Query
 	}
 
 	/**
-	 * Returns whether the query was successful
-	 *
-	 * @return boolean Query successful
+	 * @return boolean whether the query was successful
 	 */
 	public function success(): bool {
 		if (!$this->run)
