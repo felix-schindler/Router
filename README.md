@@ -1,5 +1,7 @@
 # Router
 
+Since I'm mostly using [SvelteKit](https://github.com/sveltejs/kit) and [PocketBase](https://github.com/pocketbase/pocketbase), this Router is no longer maintained. Maybe when I'm getting bored, I'll fix / improve one or two things.
+
 ## Why use this?
 
 - Dependency-free
