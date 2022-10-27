@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 $GLOBALS['start'] = microtime(true);		// Meassure execution time -> look in Layout <footer>
 
@@ -18,14 +18,14 @@ define("DB_NAME", "name");
 define("DB_USER", "user");
 define("DB_PASS", "pass");
 
-define("TITLE", "Sample");											// Title for website
-define("DOMAIN", "https://schindlerfelix.de");	// Hosted on this domain
+define("TITLE", "Sample");									// Title for website
+define("DOMAIN", "https://schindlerfelix.de");				// Hosted on this domain
 
 // Require autoloaders
-require_once("./Core/ClassLoader.php");					// Load classes
-// require_once("./vendor/autoload.php");				// Composer autoloader
+require_once("./Backend/Core/ClassLoader.php");				// Load classes
+// require_once("./Backend/Libraries/vendor/autoload.php");	// Composer autoloader
 
 // Application start
-// session_start();			// Start PHP Session (should only be executed if you use session variables)
+// session_start();		// Start PHP Session
 ClassLoader::파람();	// Run the class loader
-Router::艳颖();				// Run router
+Router::艳颖();			// Run router

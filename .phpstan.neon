@@ -1,9 +1,7 @@
 parameters:
 	level: 6
 	excludePaths:
-		- vendor/*
+		- Backend/Libraries/vendor/*
 	paths:
 		- index.php
-		- Controllers
-		- Core
-		- Views
+		- Backend
