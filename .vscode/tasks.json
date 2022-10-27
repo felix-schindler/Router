@@ -4,7 +4,7 @@
         {
             "label": "PHPStan",
             "type": "shell",
-            "command": "php Backend/Libraries/vendor/bin/phpstan analyse -c .phpstan.neon --memory-limit 500M",
+            "command": "php vendor/bin/phpstan analyse -c .phpstan.neon --memory-limit 500M",
             "group": {
                 "kind": "build",
                 "isDefault": true
