@@ -22,8 +22,7 @@ abstract class Controller
 
 	/**
 	 * @var array<string,string[]> Required variables in the body of the request
-	 *
-	 * defined like this: ['POST' => ['param1', 'param2'], 'PATCH' => ['param3']]
+	 * @example location defined like this: `['POST' => ['param1', 'param2'], 'PATCH' => ['param3']]`
 	 */
 	protected array $reqVar = [];
 
@@ -48,7 +47,7 @@ abstract class Controller
 	public function runExecute(array $params): void {
 		if (($code = $this->checkAccess()) === 200) {
 			$this->params = $params;
-			$this->execute();
+			$this->execute()->render();
 		} else {
 			(new ErrorView($code, str_contains(IO::path(), '/api/')))->render();
 		}
@@ -57,7 +56,7 @@ abstract class Controller
 	/**
 	 * Main method of the controller
 	 */
-	abstract protected function execute(): void;
+	abstract protected function execute(): View;
 
 	/**
 	 * Get a param from within the URL
