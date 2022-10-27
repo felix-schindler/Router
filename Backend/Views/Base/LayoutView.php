@@ -9,20 +9,46 @@ class LayoutView extends View
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Title</title>
-	<base href="/">
+	<title><?=TITLE?></title>
 	<style>
-		:root {
-			--on-bg: #000;
-			--bg: #fff;
+		html {
+			--sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+			--mono: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
 
 			color-scheme: dark light;
-			font-family: system-ui;
-			color: var(--on-bg);
-			background-color: var(--bg);
+			font-family: var(--sans);
 		}
-		footer { text-align: center }
-		@media screen and (prefers-color-scheme: dark) { :root { --on-bg: #fff; --bg: #151515; } }
+
+		body {
+			display: grid;
+			grid-template-rows: auto 1fr auto;
+			min-height: 100vh;
+			margin: 0;
+		}
+
+		body > header, body > footer {
+			padding: 1em;
+		}
+
+		body > main {
+			padding: 0 1em;
+		}
+
+		body > footer {
+			text-align: center;
+		}
+
+		body > header > :first-child,
+		body > main > :first-child,
+		body > footer > :first-child {
+			margin-top: 0;
+		}
+
+		body > header > :last-child,
+		body > main > :last-child,
+		body > footer > :last-child {
+			margin-bottom: 0;
+		}
 	</style>
 </head>
 <body>
@@ -39,7 +65,7 @@ class LayoutView extends View
 	</main>
 
 	<footer>
-		<p>This page was generated in <?=microtime(true) - $GLOBALS['start']?> seconds</p>
+		<p>This page was generated in <?=(microtime(true) - $GLOBALS['start']) * 1000?> ms</p>
 	</footer>
 </body>
 </html>
