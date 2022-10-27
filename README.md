@@ -24,8 +24,7 @@ Since I'm mostly using [SvelteKit](https://github.com/sveltejs/kit) and [PocketB
 This router is dependency-free. The only composer package installed is [PHPStan](https://phpstan.org), for static code analysis. Remove composer with
 
 ```zsh
-rm -rf Backend/Libraries
-rm .phpstan.neon
+rm -rf vendor/ composer* .phpstan.neon
 ```
 
 and remove the autoloader from the `index.php` file.

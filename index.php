@@ -13,17 +13,20 @@ $GLOBALS['start'] = microtime(true);		// Meassure execution time -> look in Layo
 
 // Global varialbes
 // MySQL Login data
-define("DB_HOST", "localhost");
-define("DB_NAME", "name");
-define("DB_USER", "user");
-define("DB_PASS", "pass");
+const DB_HOST = "localhost";
+const DB_NAME = "name";
+const DB_USER = "user";
+const DB_PASS = "pass";
 
-define("TITLE", "Sample");									// Title for website
-define("DOMAIN", "https://schindlerfelix.de");				// Hosted on this domain
+/**
+ * @var string This domain variable is among other things used for security features
+ */
+const DOMAIN = "https://schindlerfelix.de";			// Hosted on this domain
+const TITLE = "sample";													// Title of project
 
 // Require autoloaders
-require_once("./Backend/Core/ClassLoader.php");				// Load classes
-// require_once("./Backend/Libraries/vendor/autoload.php");	// Composer autoloader
+require_once("./Backend/Core/ClassLoader.php");	// Load classes
+require_once("./vendor/autoload.php");						// Composer autoloader
 
 // Application start
 // session_start();		// Start PHP Session
