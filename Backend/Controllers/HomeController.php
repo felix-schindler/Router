@@ -4,9 +4,9 @@ class HomeController extends Controller
 {
 	protected array $paths = ['/'];
 
-	protected function execute(): void {
+	protected function execute(): View {
 		$layout = new LayoutView();
 		$layout->addChild(new HeadingView('Home'));
-		$layout->render();
+		return $layout;
 	}
 }
