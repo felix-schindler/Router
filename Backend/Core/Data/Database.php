@@ -3,6 +3,9 @@
 /**
  * This class allow a more direct access to all Database
  * classes for easier access to things like transactions
+ *
+ * To close the connection, the instance has to be set to `null`
+ *
  * @since 2.0.0
  */
 class Database extends PDO

@@ -20,15 +20,19 @@ class Auth
 		if (($decoded = base64_decode($token)) !== false) {
 			$decToken = explode(".", $decoded);
 			if (count($decToken) === 3) {
-				if (($uuid = base64_decode($decToken[0])) != false && ($passHash = base64_decode($decToken[1])) != false && ($validUntil = base64_decode($decToken[2])) != false) {
-					$dayDiff = (new DateTime())->diff(new DateTime($validUntil))->format('%r%a');
+				if (($uuid = base64_decode($decToken[0])) && ($passHash = base64_decode($decToken[1])) && ($validUntil = base64_decode($decToken[2]))) {
+					try {
+						$dayDiff = (new DateTime())->diff(new DateTime($validUntil))->format('%r%a');
 
-					// Date is between 1 and 30 days in the future
-					if ($dayDiff > 0 && $dayDiff <= 30) {
-						$q = new Query("SELECT `password` FROM `User` WHERE `uuid`=:uuid;", [":uuid" => $uuid]);
-						if ($q->count() === 1 && ($user = $q->fetch()) !== null) {
-							return password_verify($user['password'], $passHash);
+						// Date is between 1 and 30 days in the future
+						if ($dayDiff > 0 && $dayDiff <= 30) {
+							$q = new Query("SELECT `password` FROM `User` WHERE `uuid`=:uuid;", [":uuid" => $uuid]);
+							if ($q->count() === 1 && ($user = $q->fetch()) !== null) {
+								return password_verify($user['password'], $passHash);
+							}
 						}
+					} catch (Exception) {
+						return false;
 					}
 				}
 			}
