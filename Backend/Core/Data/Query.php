@@ -86,7 +86,7 @@ class Query
 
 	/**
 	 * Reads data (row by row) from database
-	 * Access returned value via $return["ColumnName"] or via model class
+	 * Access returned value via $return['ColumnName'] or via model class
 	 *
 	 * @param Model|null $model Model class to be fetched into
 	 * @return mixed Given model or result as array - null if query failed

@@ -43,10 +43,9 @@ abstract class Model
 	 */
 	protected function setField(string $field, string $value): bool {
 		return (new Query(
-			"UPDATE `{$this->tableName}` SET `{$field}`=:value WHERE `ID`=:id;",
-			[
-				":value" => $value,
-				":id" => $this->id
+			"UPDATE `{$this->tableName}` SET `{$field}`=:value WHERE `ID`=:id;", [
+				':value' => $value,
+				':id' => $this->id
 			]
 		))->success();
 	}
@@ -59,9 +58,8 @@ abstract class Model
 	 */
 	protected function getField(string $field): ?string {
 		return (new Query(
-			"SELECT `{$field}` FROM `{$this->tableName}` WHERE `ID`=:id;",
-			[
-				":id" => $this->id
+			"SELECT `{$field}` FROM `{$this->tableName}` WHERE `ID`=:id;", [
+				':id' => $this->id
 			]
 		))->fetch()[$field];
 	}

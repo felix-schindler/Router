@@ -36,7 +36,7 @@ class InsertQuery extends Query
 	 * @return int|string Last insert ID or 0 on failure
 	 */
 	public function run(?string $idName = null): int|string {
-		$this->queryStr .= ");";
+		$this->queryStr .= ');';
 		return $this->lastInsertId($idName);
 	}
 }

@@ -12,6 +12,8 @@ class IO
 	 *
 	 * @param string $var Name/Key of variable
 	 * @return string|array<mixed>|null array with !RAW! values OR htmlspecialchars, urldecoded string
+	 * @example Backend/Core/System/IO.php query("username")
+	 * @since 2.0.0
 	 */
 	public static function query(string $var): string | array | null {
 		if (isset($_GET[$var]))
@@ -29,6 +31,8 @@ class IO
 	 *
 	 * @param string $var Name/Key of variable
 	 * @return string|array<mixed>|null array with !RAW! values OR htmlspecialchars, urldecoded string
+	 * @example Backend/Core/System/IO.php body("password")
+	 * @since 2.0.0
 	 */
 	public static function body(string $var): string | array | null {
 		if (isset($_POST[$var])) {
