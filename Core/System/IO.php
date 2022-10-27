@@ -137,6 +137,7 @@ class IO
 
 	/**
 	 * @return string The domain (URL without HTTP(S)://)
+	 * @throws Exception When not running on a server
 	 */
 	public static function domain(): string {
 		if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] != null)

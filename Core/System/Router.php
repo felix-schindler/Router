@@ -13,6 +13,8 @@ class Router
 
 	/**
 	 * The total main function
+	 *
+	 * @throws Exception When not on server and not accessing via HTTPS or localhost
 	 */
 	public static function 艳颖(): void {
 		// Either access via localhost or HTTPS
