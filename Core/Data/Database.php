@@ -40,6 +40,9 @@ class Database extends PDO
 	 * Reads data (row by row) from database
 	 * Access returned value via $return['ColumnName']
 	 *
+	 * This should be executed if only one
+	 * row is returned or in a do-while loop
+	 *
 	 * @see https://bugs.php.net/bug.php?edit=2&id=44341 Always string values!
 	 * @throws PDOException When anything goes wrong
 	 * @return array<string,string>|null Result as array - null on failure
