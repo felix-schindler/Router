@@ -3,6 +3,7 @@
 			"php": "^8.1",
 			"ext-pdo": "*",
 			"ext-json": "*",
+			"ext-random": "*",
 			"phpstan/phpstan": "^1.2"
     }
 }

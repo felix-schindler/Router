@@ -20,6 +20,7 @@ class Utils
 	 * Generates a random uuid (Version 4)
 	 *
 	 * @param string|null $data Random bytes
+   * @throws Exception If an appropriate source of randomness cannot be found on the system
 	 * @return string A random uuid
 	 */
 	public static function uuid(?string $data = null): string {
@@ -42,7 +43,7 @@ class Utils
 	 * @param string $uuid String to be checked
 	 * @return boolean Whether it's the correct format or not
 	 */
-	public static function isUUID(string $uuid) {
+	public static function isUUID(string $uuid): bool {
 		return preg_match("/^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i", $uuid) === 1;
 	}
 }
