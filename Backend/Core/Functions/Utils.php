@@ -12,7 +12,7 @@ class Utils
 	 * @param string $algo Hashing algorithmn - Standard: SHA256
 	 * @return string Hashed data
 	 */
-	public static function encrypt(string $data, string $algo = "sha256"): string {
+	public static function encrypt(string $data, string $algo = 'sha256'): string {
 		return hash($algo, $data);
 	}
 

@@ -33,6 +33,8 @@ abstract class Controller
 
 	/**
 	 * Adds the paths to the router
+	 *
+	 * @throws Exception When a path is already taken
 	 */
 	public function initRoutes(): void {
 		foreach ($this->paths as $path)
@@ -43,6 +45,7 @@ abstract class Controller
 	 * Executes the controller with given params
 	 *
 	 * @param array<string,string> $params Parameters
+	 * @throws Exception If there's no request URI set
 	 */
 	public function runExecute(array $params): void {
 		if (($code = $this->checkAccess()) === 200) {
@@ -84,6 +87,7 @@ abstract class Controller
 	/**
 	 * Checks if the access to this controller is allowed
 	 *
+	 * @throws Exception If there's no request method set
 	 * @return int HTTP status code (200 === OK!)
 	 */
 	private function checkAccess(): int {

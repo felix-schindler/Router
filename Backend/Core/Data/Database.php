@@ -27,16 +27,13 @@ class Database extends PDO
 	 *
 	 * @param string $queryStr SQL query as string
 	 * @param array<string,string> $values Escaped values
-	 * @return bool Whether the query was executed successfully
+  	* @throws PDOException When anything goes wrong
+ 	 * @return bool Whether the query was executed successfully
 	 */
 	public function execute(string $queryStr, array $values): bool
 	{
-		try {
-			$this->query = $this->prepare($queryStr);
-			return $this->query->execute($values);
-		} catch (PDOException) {
-			return false;
-		}
+		$this->query = $this->prepare($queryStr);
+		return $this->query->execute($values);
 	}
 
 	/**
