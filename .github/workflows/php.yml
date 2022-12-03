@@ -27,4 +27,4 @@ jobs:
       run: composer install --no-progress
 
     - name: Run test suite
-      run: php vendor/bin/phpstan analyse -c .phpstan.neon --memory-limit 500M
+      run: php vendor/bin/phpstan analyse -c .phpstan.neon --memory-limit 500M --xdebug --no-progress
