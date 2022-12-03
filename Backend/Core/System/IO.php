@@ -11,14 +11,15 @@ class IO
 	 * `WARN: When value is an array, values are obviously not escaped, so be CAREFUL`
 	 *
 	 * @param string $var Name/Key of variable
-	 * @return string|array<mixed>|null array with !RAW! values OR htmlspecialchars, urldecoded string
+	 * @return string|array<mixed>|null excaped string OR array with raw values
 	 * @example Backend/Core/System/IO.php query("username")
 	 * @since 2.0.0
 	 */
-	public static function query(string $var): string | array | null {
+	public static function query(string $var): string | array | null
+	{
 		if (isset($_GET[$var]))
 			if (is_string($_GET[$var]))
-				return htmlspecialchars(urldecode(strval($_GET[$var])));
+				return htmlspecialchars(urldecode($_GET[$var]));
 			elseif (is_array($_GET[$var]))
 				return $_GET[$var];
 		return null;
@@ -30,46 +31,24 @@ class IO
 	 * `WARN: When value is an array, values are obviously not escaped, so be CAREFUL`
 	 *
 	 * @param string $var Name/Key of variable
-	 * @return string|array<mixed>|null array with !RAW! values OR htmlspecialchars, urldecoded string
+	 * @return string|array<mixed>|null excaped string OR array with raw values
 	 * @example Backend/Core/System/IO.php body("password")
 	 * @since 2.0.0
 	 */
-	public static function body(string $var): string | array | null {
-		if (isset($_POST[$var])) {
+	public static function body(string $var): string | array | null
+	{
+		if ($_SERVER['CONTENT_TYPE'] == 'application/json' || $_SERVER['HTTP_CONTENT_TYPE'] == 'application/json') {
+			if (($json = json_decode(file_get_contents('php://input'), true)) !== null && isset($json[$var])) {
+				if (is_string($json[$var]))
+					return htmlspecialchars($json[$var]);
+				elseif (is_array($json[$var]))
+					return $json[$var];
+			}
+		} elseif (isset($_POST[$var])) {
 			if (is_string($_POST[$var]))
-				return htmlspecialchars(urldecode(strval($_POST[$var])));
+				return htmlspecialchars(urldecode($_POST[$var]));
 			elseif (is_array($_POST[$var]))
 				return $_POST[$var];
-		} elseif (($json = json_decode(($inputData = file_get_contents('php://input')), true)) !== null && isset($json[$var])) {
-			if (is_string($json[$var]))
-				return htmlspecialchars(strval($json[$var]));
-			elseif (is_array($json[$var]))
-				return $json[$var];
-		} elseif (IO::method() != 'POST') {
-			if ($inputData != null) {
-				$arr = [];
-				foreach (explode('&', $inputData) as $chunk) {
-					$param = explode('=', $chunk);
-					$key = urldecode($param[0]);
-					if (isset($param[1])) {
-						if (!isset($arr[$key]))
-							$arr[$key] = urldecode($param[1]);
-						else {
-							if (is_string($arr[$key])) {
-								$arr[$key] = [$arr[$key], urldecode($param[1])];
-							} else {
-								$arr[$key][count($arr[$key])] = urldecode($param[1]);
-							}
-						}
-					}
-				}
-				if (isset($arr[$var])) {
-					if (is_string($arr[$var]))
-						return htmlspecialchars(urldecode(strval($arr[$var])));
-					elseif (is_array($arr[$var]))
-						return $arr[$var];
-				}
-			}
 		}
 
 		return null;
@@ -81,23 +60,23 @@ class IO
 	 *
 	 * @param string $var Name of variable
 	 * @param string|null $value Value of variable - If this is set not null -> get to set
-	 * @param boolean $exact Get the exact value
 	 * @throws Error When there is no session
 	 * @return string|null Value of variable or null if not exists and on set
+	 * @throws Exception When no php session was started
 	 */
-	public static function SESSION(string $var, string $value = null, bool $exact = false): ?string {
+	public static function SESSION(string $var, string $value = null): ?string
+	{
 		if (session_status() !== PHP_SESSION_ACTIVE)
-			throw new Error('You have to start the session first');
+			throw new Exception('You have to start the session first');
 
 		// Set variable
-		if ($value !== null) {
+		if ($value !== null)
 			$_SESSION[$var] = $value;
-			return null;
-		}
 
-		if (isset($_SESSION[$var]))
-			if (is_string($_SESSION[$var]))
-				return $exact ? $_SESSION[$var]: htmlspecialchars($_SESSION[$var]);
+		// Return variable
+		else if (isset($_SESSION[$var]) && is_string($_SESSION[$var]))
+			return htmlspecialchars($_SESSION[$var]);
+
 		return null;
 	}
 
@@ -107,18 +86,17 @@ class IO
 	 * @param string $var Name of variable
 	 * @param string|null $value Value of variable - If this is set not null -> get to set
 	 * @param integer $lifetime Standard: 30 days
-	 * @param boolean $exact Get the exact value
 	 * @return string|null Value of variable or null if not exists and on set
+	 * @throws Exception When code is not executed on HTTP server
 	 */
-	public static function COOKIE(string $var, ?string $value = null, int $lifetime = 2592000, bool $exact = false): ?string {
+	public static function COOKIE(string $var, ?string $value = null, int $lifetime = 2592000): ?string
+	{
 		if ($value !== null) {
-			setcookie($var, $value, time()+$lifetime, '/', self::domain(), true);
-			return null;
+			setcookie($var, $value, time() + $lifetime, '/', self::domain(), true);
+		} else if (isset($_COOKIE[$var]) && is_string($_COOKIE[$var])) {
+			return htmlspecialchars($_COOKIE[$var]);
 		}
 
-		if (isset($_COOKIE[$var]))
-			if (is_string($_COOKIE[$var]))
-				return $exact ? strval($_COOKIE[$var]): htmlspecialchars(strval($_COOKIE[$var]));
 		return null;
 	}
 
@@ -127,7 +105,8 @@ class IO
 	 *
 	 * @return string|null The auth header, NULL if not set
 	 */
-	public static function authHeader(): ?string {
+	public static function authHeader(): ?string
+	{
 		if (isset($_SERVER['Authorization']))					// "Normal"
 			return trim($_SERVER['Authorization']);
 		elseif (isset($_SERVER['HTTP_AUTHORIZATION']))		// Nginx or fast CGI
@@ -139,7 +118,8 @@ class IO
 	 * @return string The domain (URL without HTTP(S)://)
 	 * @throws Exception When not running on a server
 	 */
-	public static function domain(): string {
+	public static function domain(): string
+	{
 		if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] != null)
 			return $_SERVER['SERVER_NAME'];
 		throw new Exception('Not running on a server');
@@ -149,7 +129,8 @@ class IO
 	 * @return string Currently requested path
 	 * @throws Exception When no request is set
 	 */
-	public static function path(): string {
+	public static function path(): string
+	{
 		if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] != null)
 			return explode('?', $_SERVER['REQUEST_URI'], 2)[0];
 		throw new Exception('No request');
@@ -158,23 +139,28 @@ class IO
 	/**
 	 * @return string Full URL with protocol and request uri
 	 */
-	public static function fullURL(): string {
+	public static function fullURL(): string
+	{
 		return 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	}
 
 	/**
 	 * @return string HTTP request method
+	 * @throws Exception When no request method set
 	 */
-	public static function method(): string {
+	public static function method(): string
+	{
 		if (isset($_SERVER['REQUEST_METHOD']))
 			return $_SERVER['REQUEST_METHOD'];
 		throw new Exception('No request method set');
 	}
 
 	/**
-	* @return string HTTP 'Accept' header
-	*/
-	public static function accept(): string {
+	 * @return string HTTP 'Accept' header
+	 * @throws Exception When no accept header set
+	 */
+	public static function accept(): string
+	{
 		if (isset($_SERVER['HTTP_ACCEPT']))
 			return explode(',', $_SERVER['HTTP_ACCEPT'])[0];
 		throw new Exception('No accept header set');
