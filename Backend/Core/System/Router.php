@@ -16,7 +16,8 @@ class Router
 	 *
 	 * @throws Exception When not on server and not accessing via HTTPS or localhost
 	 */
-	public static function 艳颖(): void {
+	public static function 艳颖(): void
+	{
 		// Either access via localhost or HTTPS
 		if (!isset($_SERVER["HTTPS"]) && !(IO::domain() === "localhost"))
 			throw new Exception("Only access over HTTPS allowed");
@@ -32,7 +33,7 @@ class Router
 			$routes = array_keys(self::$routes);										// Get all routes as string
 			$reqRouteArr = explode("/", $reqRoute);		        			// Split requested route
 
-			$routes = array_filter($routes, function($route) use ($reqRouteArr): bool {	// Filter out all routes that don't match
+			$routes = array_filter($routes, function ($route) use ($reqRouteArr): bool {	// Filter out all routes that don't match
 				$routeArr = explode("/", $route);
 				if (str_contains($route, ':'))												// Only routes with variables, on direct hit it would have already exited
 					if (count($routeArr) == count($reqRouteArr))				// Routes have to same length to be a match
@@ -45,7 +46,7 @@ class Router
 				foreach ($routes as $route) {													// Calculate scores to get the route that fits best
 					$routeArr = explode("/", $route);
 					$hits[$route] = 0;
-					for ($i=0; $i < count($routeArr); $i++) {
+					for ($i = 0; $i < count($routeArr); $i++) {
 						if ($routeArr[$i] == $reqRouteArr[$i])						// Prioritise direct routes over variables
 							$hits[$route]++;																// Increment hit score
 						elseif ($routeArr[$i][0] != ":") {								// Remove route if does not match and not a variable
@@ -62,7 +63,7 @@ class Router
 
 					$routeArr = explode("/", $route);
 					$params = [];
-					for ($i=0; $i < count($routeArr); $i++)
+					for ($i = 0; $i < count($routeArr); $i++)
 						if (isset($routeArr[$i][0]) && $routeArr[$i][0] === ":")		// If part of URL is a variable
 							$params[substr($routeArr[$i], 1)] = $reqRouteArr[$i];			// Set as param (this could be a on-liner)
 					self::$routes[$route]->runExecute($params);										// Execute controller for found route
@@ -80,7 +81,8 @@ class Router
 	 * @param Controller $con Controller to handle route
 	 * @throws Exception When a route already exists with another controller
 	 */
-	public static function addRoute(string $route, Controller $con): void {
+	public static function addRoute(string $route, Controller $con): void
+	{
 		if (self::routeExists($route, $con))
 			throw new Exception("Route " . $route . " already used for " . self::$routes[$route]::class);
 		self::$routes[$route] = $con;
@@ -93,7 +95,8 @@ class Router
 	 * @param Controller|null $con Controller to be routed to
 	 * @return boolean True if exists, false otherwise
 	 */
-	private static function routeExists(string $route, ?Controller $con = null): bool {
+	private static function routeExists(string $route, ?Controller $con = null): bool
+	{
 		if (isset(self::$routes[$route])) {
 			if ($con === null)
 				return true;

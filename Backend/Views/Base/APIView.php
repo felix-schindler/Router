@@ -9,9 +9,11 @@ class APIView extends View
 	public function __construct(
 		public ?array $data = null,
 		private readonly int $maxAge = 300
-	){}
+	) {
+	}
 
-	public function render(): void {
+	public function render(): void
+	{
 		header('Content-Type: application/json; charset=utf-8');
 		header('Access-Control-Allow-Origin: ' . DOMAIN);
 		header('Access-Control-Allow-Headers: Authorization, Origin, X-Requested-With, Content-Type, Accept');

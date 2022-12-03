@@ -27,8 +27,8 @@ class Database extends PDO
 	 *
 	 * @param string $queryStr SQL query as string
 	 * @param array<string,string> $values Escaped values
-  	* @throws PDOException When anything goes wrong
- 	 * @return bool Whether the query was executed successfully
+	 * @throws PDOException When anything goes wrong
+	 * @return bool Whether the query was executed successfully
 	 */
 	public function execute(string $queryStr, array $values): bool
 	{

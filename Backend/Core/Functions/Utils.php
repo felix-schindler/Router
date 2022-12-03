@@ -12,7 +12,8 @@ class Utils
 	 * @param string $algo Hashing algorithmn - Standard: SHA256
 	 * @return string Hashed data
 	 */
-	public static function encrypt(string $data, string $algo = 'sha256'): string {
+	public static function encrypt(string $data, string $algo = 'sha256'): string
+	{
 		return hash($algo, $data);
 	}
 
@@ -20,10 +21,11 @@ class Utils
 	 * Generates a random uuid (Version 4)
 	 *
 	 * @param string|null $data Random bytes
-   * @throws Exception If an appropriate source of randomness cannot be found on the system
+	 * @throws Exception If an appropriate source of randomness cannot be found on the system
 	 * @return string A random uuid
 	 */
-	public static function uuid(?string $data = null): string {
+	public static function uuid(?string $data = null): string
+	{
 		// Generate 16 bytes (128 bits) of random data or use the data passed into the function.
 		$data ??= random_bytes(16);
 		assert(strlen($data) == 16);
@@ -43,7 +45,8 @@ class Utils
 	 * @param string $uuid String to be checked
 	 * @return boolean Whether it's the correct format or not
 	 */
-	public static function isUUID(string $uuid): bool {
+	public static function isUUID(string $uuid): bool
+	{
 		return preg_match("/^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i", $uuid) === 1;
 	}
 }

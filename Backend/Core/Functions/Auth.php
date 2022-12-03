@@ -11,7 +11,8 @@ class Auth
 	 * @param string|null $token The auth (bearer) token
 	 * @return boolean True if valid, otherwise false
 	 */
-	public static function validateToken(?string $token = null): bool {
+	public static function validateToken(?string $token = null): bool
+	{
 		if ($token === null) {
 			if (($token = IO::authHeader()) == null) {
 				return false;
@@ -46,7 +47,8 @@ class Auth
 	 *
 	 * @return string|null
 	 */
-	public static function tokenUuid(): ?string {
+	public static function tokenUuid(): ?string
+	{
 		if (($token = IO::authHeader()) != null) {
 			if (($decoded = base64_decode($token)) !== false) {
 				$decToken = explode(".", $decoded);
@@ -64,7 +66,8 @@ class Auth
 	 * @param string $hash Password hash of a user
 	 * @return string Valid token for the next 30 days
 	 */
-	public static function generateToken(string $uuid, string $hash): string {
+	public static function generateToken(string $uuid, string $hash): string
+	{
 		$validUntil = (new DateTime())->add(new DateInterval('P30D'))->format("Y-m-d");
 		$hashHash = password_hash($hash, PASSWORD_DEFAULT);
 		return base64_encode(base64_encode($uuid) . "." . base64_encode($hashHash) . "." . base64_encode($validUntil));

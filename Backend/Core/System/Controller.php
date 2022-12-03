@@ -36,7 +36,8 @@ abstract class Controller
 	 *
 	 * @throws Exception When a path is already taken
 	 */
-	public function initRoutes(): void {
+	public function initRoutes(): void
+	{
 		foreach ($this->paths as $path)
 			Router::addRoute($path, $this);
 	}
@@ -47,7 +48,8 @@ abstract class Controller
 	 * @param array<string,string> $params Parameters
 	 * @throws Exception If there's no request URI set
 	 */
-	public function runExecute(array $params): void {
+	public function runExecute(array $params): void
+	{
 		if (($code = $this->checkAccess()) === 200) {
 			$this->params = $params;
 			$this->execute()->render();
@@ -67,7 +69,8 @@ abstract class Controller
 	 * @param string $var Name of variable
 	 * @return string|null Value of variable or null if not exists
 	 */
-	protected function param(string $var): ?string {
+	protected function param(string $var): ?string
+	{
 		if (isset($this->params[$var]) && is_string($this->params[$var]))
 			return htmlspecialchars(urldecode(strval($this->params[$var])));
 		return null;
@@ -79,7 +82,8 @@ abstract class Controller
 	 * @param string $url Redirectes to this
 	 * @return never No code execution after this
 	 */
-	protected function redirect(string $url): never {
+	protected function redirect(string $url): never
+	{
 		header('Location: ' . $url);
 		exit;
 	}
@@ -90,7 +94,8 @@ abstract class Controller
 	 * @throws Exception If there's no request method set
 	 * @return int HTTP status code (200 === OK!)
 	 */
-	private function checkAccess(): int {
+	private function checkAccess(): int
+	{
 		$method = IO::method();
 		header('Access-Control-Allow-Methods: ' . implode(', ', array_merge(['OPTIONS', 'HEAD'], $this->methods)));
 		if (empty(array_intersect(['*', 'OPTIONS', 'HEAD', $method], $this->methods)))

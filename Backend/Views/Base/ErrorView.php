@@ -6,11 +6,13 @@ class ErrorView extends View
 		public int $code = 404,
 		public bool $isAPI = false,
 		public ?string $message = null
-	){}
+	) {
+	}
 
-	public function render(): void {
+	public function render(): void
+	{
 		if ($this->message === null) {
-			$this->message = match($this->code) {
+			$this->message = match ($this->code) {
 				100 => 'Continue',
 				101 => 'Switching Protocols',
 				200 => 'OK',
