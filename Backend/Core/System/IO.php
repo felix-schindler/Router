@@ -38,11 +38,13 @@ class IO
 	public static function body(string $var): string | array | null
 	{
 		if ($_SERVER['CONTENT_TYPE'] == 'application/json' || $_SERVER['HTTP_CONTENT_TYPE'] == 'application/json') {
-			if (($json = json_decode(file_get_contents('php://input'), true)) !== null && isset($json[$var])) {
-				if (is_string($json[$var]))
-					return htmlspecialchars($json[$var]);
-				elseif (is_array($json[$var]))
-					return $json[$var];
+			if (($input = file_get_contents('php://input')) !== false) {
+				if (($json = json_decode($input, true)) !== null && isset($json[$var])) {
+					if (is_string($json[$var]))
+						return htmlspecialchars($json[$var]);
+					elseif (is_array($json[$var]))
+						return $json[$var];
+				}
 			}
 		} elseif (isset($_POST[$var])) {
 			if (is_string($_POST[$var]))

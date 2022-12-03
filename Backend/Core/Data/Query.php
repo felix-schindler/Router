@@ -37,12 +37,13 @@ class Query
 	 * You SHOULD DEFINETELY use placeholders and an array with the values for execution
 	 *
 	 * @param string $queryStr Query as a string
-	 * @param array<string|int,string|float>|null $values Values for placeholders
+	 * @param array<string,string|float>|null $values Values for placeholders
 	 */
-	public function __construct(string $queryStr = '', ?array $values = null) {
+	public function __construct(string $queryStr = '', ?array $values = null)
+	{
 		$this->queryStr = $queryStr;
 		$this->values = $values;
-		$this->con = new PDO('mysql:host='.DB_HOST.'; dbname='.DB_NAME, DB_USER, DB_PASS);
+		$this->con = new PDO('mysql:host=' . DB_HOST . '; dbname=' . DB_NAME, DB_USER, DB_PASS);
 	}
 
 	/**
@@ -50,7 +51,8 @@ class Query
 	 *
 	 * @param string $queryStr
 	 */
-	public function setQueryString(string $queryStr): void {
+	public function setQueryString(string $queryStr): void
+	{
 		$this->queryStr = $queryStr;
 	}
 
@@ -59,7 +61,8 @@ class Query
 	 *
 	 * @return string Current query
 	 */
-	public function getQueryString(): string {
+	public function getQueryString(): string
+	{
 		return $this->queryStr;
 	}
 
@@ -69,7 +72,8 @@ class Query
 	 * @param string|null $name ID row name, must be specified if row name doesn't equal "ID"
 	 * @return int|string Last insert ID
 	 */
-	public function lastInsertId(string $name = null): int|string {
+	public function lastInsertId(string $name = null): int|string
+	{
 		if (!$this->run)
 			$this->execute();
 		if ($this->success) {
@@ -91,7 +95,8 @@ class Query
 	 * @param Model|null $model Model class to be fetched into
 	 * @return mixed Given model or result as array - null if query failed
 	 */
-	public function fetch(Model $model = null): mixed {
+	public function fetch(Model $model = null): mixed
+	{
 		if (!$this->run)
 			$this->execute();
 		if ($this->success) {
@@ -109,7 +114,8 @@ class Query
 	 * @see https://bugs.php.net/bug.php?edit=2&id=44341
 	 * @return array<array<int|string,string>>|null Null on error, array with values (as string!) otherwise (PDO::FETCH_ASSOC)
 	 */
-	public function fetchAll(): ?array {
+	public function fetchAll(): ?array
+	{
 		if (!$this->run)
 			$this->execute();
 		if ($this->success)
@@ -121,7 +127,8 @@ class Query
 	/**
 	 * Executes the query and sets success variable
 	 */
-	private function execute(): void {
+	private function execute(): void
+	{
 		$this->run = true;
 		if (($stmt = $this->con->prepare($this->queryStr)) !== false) {
 			$this->stmt = $stmt;
@@ -134,7 +141,8 @@ class Query
 	 *
 	 * @return integer Effected rows
 	 */
-	public function count(): int {
+	public function count(): int
+	{
 		if (!$this->run)
 			$this->execute();
 		return $this->stmt->rowCount();
@@ -143,7 +151,8 @@ class Query
 	/**
 	 * @return boolean whether the query was successful
 	 */
-	public function success(): bool {
+	public function success(): bool
+	{
 		if (!$this->run)
 			$this->execute();
 		return $this->success;
