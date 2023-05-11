@@ -4,7 +4,7 @@
 	"editor.useTabStops": true,
 	"files.insertFinalNewline": true,
 	"files.trimTrailingWhitespace": true,
-	"phpstan.binPath": "Backend/Libraries/vendor/bin/phpstan",
+	"phpstan.binPath": "vendor/bin/phpstan",
 	"phpstan.configFile": ".phpstan.neon",
 	"phpstan.enabled": true,
 }

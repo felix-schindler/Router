@@ -58,22 +58,18 @@ class LayoutView extends View
 		<body>
 			<header>
 				<a href="/">Home</a>
-				<a href="/article/2">Other one</a>
-				<a href="/article/321">Should not be called</a>
+				<a href="/article/2">Article</a>
+				<a href="/article/321">Still article</a>
 				<a href="/api/sample">API</a>
-				<a href="/err">Error</a>
+				<a href="/err">404</a>
 			</header>
 
 			<main>
-				<?php foreach ($_SERVER as $key => $value) : ?>
-					<p><?= $key ?>: <?= $value ?></p>
-				<?php endforeach; ?>
-
 				<?php $this->renderChildren(); ?>
 			</main>
 
 			<footer>
-				<p>This page was generated in <?= (microtime(true) - $GLOBALS['start']) * 1000 ?> ms</p>
+				<p>generated in <?= number_format((microtime(true) - $GLOBALS['start']) * 1000, 2) ?> ms</p>
 			</footer>
 		</body>
 

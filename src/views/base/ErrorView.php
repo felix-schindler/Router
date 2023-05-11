@@ -60,9 +60,9 @@ class ErrorView extends View
 			(new APIView([$this->code => $this->message]))->render();		// Render error as JSON
 		} else {
 			(new LayoutView())
-				->addChild(new HeadingView("{$this->code} &middot; {$this->message}"))
+				->addChild(new HeadingView("{$this->code} - {$this->message}"))
+				->addChildren(...$this->getChildren())
 				->render();													// Render error as HTML
-			$this->renderChildren();
 		}
 	}
 }

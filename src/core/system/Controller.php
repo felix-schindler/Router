@@ -71,7 +71,7 @@ abstract class Controller
 	 */
 	protected function param(string $var): ?string
 	{
-		if (isset($this->params[$var]) && is_string($this->params[$var]))
+		if (isset($this->params[$var]))
 			return htmlspecialchars(urldecode(strval($this->params[$var])));
 		return null;
 	}

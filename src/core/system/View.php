@@ -28,6 +28,29 @@ abstract class View
 	}
 
 	/**
+	 * Add multiple children
+	 *
+	 * @param View ...$children Children
+	 * @return View Current view
+	 */
+	public function addChildren(View ...$children): View
+	{
+		$this->children = array_merge($this->children, $children);
+		return $this;
+	}
+
+	/**
+	 * Get all children
+	 *
+	 * @return array<View> Children
+	 * @see View::$children
+	 */
+	public function getChildren(): array
+	{
+		return $this->children;
+	}
+
+	/**
 	 * Render children
 	 */
 	public function renderChildren(?string $element = null): void
@@ -41,7 +64,7 @@ abstract class View
 	}
 
 	/**
-	 * Get rendered HTML as string
+	 * Get rendered (HTML) View as string
 	 */
 	public function __toString(): string
 	{

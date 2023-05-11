@@ -1,6 +1,6 @@
 <?php
 
-class SecondHome extends Controller
+class ArticleController extends Controller
 {
 	protected array $paths = ['/article/:id'];
 
