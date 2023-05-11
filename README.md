@@ -1,30 +1,52 @@
 # Router
 
-Since I'm mostly using [SvelteKit](https://github.com/sveltejs/kit) and [PocketBase](https://github.com/pocketbase/pocketbase), this Router is no longer maintained. Maybe when I'm getting bored, I'll fix / improve one or two things.
+Since I'm mostly using [SvelteKit](https://github.com/sveltejs/kit) and
+[PocketBase](https://github.com/pocketbase/pocketbase), this Router is no longer
+maintained. Maybe when I'm getting bored, I'll fix / improve one or two things.
 
 ## Why use this?
 
 - Dependency-free
 - MVC
-- No Models included, but you use PDO with the [Query class](/Backend/Core/Data/Query.php)
-- Easy to use readable URLs like "/u/:name" instead of things like "user.php?name="
+- No Models included, but you use PDO with the
+  [Query class](/Backend/Core/Data/Query.php)
+- Easy to use readable URLs like `/u/:name` instead of things like
+  `user.php?name=`
 
 ## Getting started
 
-1. Clone GitHub Repo - `git clone git@github.com:felix-schindler/Router.git && cd Router`
-2. Run `php -S localhost:8080` or throw it on a web server
+```bash
+# Clone git repo
+git clone git@github.com:felix-schindler/Router.git && cd Router
+# Run dev server
+php -S localhost:8080 -t src/
+# or
+composer run dev
+
+# OPTIONAL - Install testing dependencies
+composer install
+# Run tests
+composer run test:unit
+# Static code analysis
+composer run test:static
+# Run both checks
+composer run test
+```
 
 ## Requirements
 
-- [PHP 8.1](https://www.php.net) with [PDO](https://www.php.net/manual/de/book.pdo.php)
-- __OPTIONAL__: [Composer](https://getcomposer.org)
+- [PHP 8.2](https://www.php.net) with
+  [PDO](https://www.php.net/manual/de/book.pdo.php)
+- **OPTIONAL**: [Composer](https://getcomposer.org)
 
-## Remove junk
+### Remove junk
 
-This router is dependency-free. The only composer package installed is [PHPStan](https://phpstan.org), for static code analysis. Remove composer with
+This router is dependency-free. The only composer packages installed are
+[PHPStan](https://phpstan.org) and [PHPUnit](https://phpunit.de), for static
+code analysis and unit testing. Remove with
 
 ```zsh
-rm -rf vendor/ composer* .phpstan.neon
+rm -rf vendor/ composer* .phpstan.neon .vscode/tasks.json
 ```
 
 and remove the autoloader from the `index.php` file.
@@ -37,4 +59,4 @@ Make sure your web server:
 - Serves files
 - Routes through index.php (if the path doesn't match a file)
 
-Works on: Apache, Nginx, [Caddy](https://caddyserver.com)
+Tested on: Apache, Nginx, [Caddy](https://caddyserver.com)
