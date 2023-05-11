@@ -1,8 +1,22 @@
 {
+	"scripts": {
+		"dev": "php -S localhost:8080 -t src/",
+		"test": "composer run test:static && composer run test:unit",
+		"test:unit": "php vendor/bin/phpunit tests/",
+		"test:static": "php vendor/bin/phpstan analyse -c .phpstan.neon --memory-limit 500M"
+	},
+	"autoload": {
+		"classmap": [
+			"src"
+		]
+	},
 	"require": {
-		"php": "^8.1",
+		"php": "^8.2",
 		"ext-pdo": "*",
-		"ext-json": "*",
-		"phpstan/phpstan": "^1.9"
+		"ext-json": "*"
+	},
+	"require-dev": {
+		"phpstan/phpstan": "^1.10",
+		"phpunit/phpunit": "^10"
 	}
 }
