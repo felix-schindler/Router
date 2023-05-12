@@ -25,8 +25,8 @@ const DOMAIN = 'https://schindlerfelix.de';			// Hosted on this domain
 const TITLE = 'sample';													// Title of project
 
 // Require autoloaders
-require_once('./core/ClassLoader.php');	// Load classes
-require_once('../vendor/autoload.php');						// Composer autoloader
+require_once('./core/ClassLoader.php');					// Load classes
+// require_once('../vendor/autoload.php');			// Composer autoloader (currently doesn't work with docker)
 
 // Application start
 // session_start();		// Start PHP Session

@@ -17,7 +17,7 @@ class APIView extends View
 		header('Content-Type: application/json; charset=utf-8');
 		header('Access-Control-Allow-Origin: ' . DOMAIN);
 		header('Access-Control-Allow-Headers: Authorization, Origin, X-Requested-With, Content-Type, Accept');
-		header('Access-Control-Max-Age: ' . $this->maxAge);
+		header('Access-Control-Max-Age: ' . $this->maxAge);	// Preflight cache max age
 
 		echo json_encode($this->data);
 	}
