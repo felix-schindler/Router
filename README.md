@@ -13,7 +13,22 @@ maintained. Maybe when I'm getting bored, I'll fix / improve one or two things.
 - Easy to use readable URLs like `/u/:name` instead of things like
   `user.php?name=`
 
-## Getting started
+## Requirements
+
+- [PHP 8.2](https://www.php.net)
+  - with pdo, json and mbstring extensions
+- **OPTIONAL**: [Composer](https://getcomposer.org)
+
+### Remove junk
+
+```bash
+# Remove composer things
+rm -rf composer* vendor/ .phpstan.neon .vscode/tasks.json
+# Remove docker things
+rm docker-compose.yml Caddyfile
+```
+
+## Development
 
 ```bash
 # Clone git repo
@@ -24,37 +39,20 @@ php -S localhost:8080 -t src/
 composer run dev
 
 # OPTIONAL - Install testing dependencies
-composer install
-# Run tests
-composer run test:unit
-# Static code analysis
-composer run test:static
-# Run both checks
+composer i
+# Run unit tests and static code analysis
 composer run test
 ```
 
-## Requirements
+## Deploy
 
-- [PHP 8.2](https://www.php.net) with
-  [PDO](https://www.php.net/manual/de/book.pdo.php)
-- **OPTIONAL**: [Composer](https://getcomposer.org)
-
-### Remove junk
-
-This router is dependency-free. The only composer packages installed are
-[PHPStan](https://phpstan.org) and [PHPUnit](https://phpunit.de), for static
-code analysis and unit testing. Remove with
+### Docker
 
 ```bash
-# Remove composer things
-rm -rf vendor/ composer* .phpstan.neon .vscode/tasks.json
-# Remove docker things
-rm docker-compose.yml Caddyfile
+docker compose up
 ```
 
-and remove the autoloader from the `index.php` file.
-
-## Deploy
+### without Docker
 
 Make sure your web server:
 
