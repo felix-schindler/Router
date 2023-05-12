@@ -18,7 +18,7 @@ class ClassLoader
 	 */
 	public static function 파람(): void
 	{
-		$files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'src'), RecursiveIteratorIterator::SELF_FIRST);
+		$files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR), RecursiveIteratorIterator::SELF_FIRST);
 		foreach ($files as $file)
 			if (pathinfo($file->getFileName(), PATHINFO_EXTENSION) == 'php' && !str_contains($file->getPathname(), 'vendor'))
 				self::$classes[strval(str_replace('.php', '', $file->getFileName()))] = $file->getPathname();
