@@ -69,7 +69,11 @@ class LayoutView extends View
 			</main>
 
 			<footer>
-				<p>generated in <?= number_format((microtime(true) - $GLOBALS['start']) * 1000, 2) ?> ms</p>
+				<?php
+				$executionTime = (microtime(true) - $GLOBALS['start']) * 1000;
+				$timeSinceReq = ($GLOBALS['start'] - $_SERVER['REQUEST_TIME_FLOAT']) * 1000
+				?>
+				<p>generated in <?= number_format($executionTime, 2) ?> ms ; server ate <?= number_format($timeSinceReq, 2) ?> ms</p>
 			</footer>
 		</body>
 
