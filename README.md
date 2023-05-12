@@ -45,8 +45,11 @@ This router is dependency-free. The only composer packages installed are
 [PHPStan](https://phpstan.org) and [PHPUnit](https://phpunit.de), for static
 code analysis and unit testing. Remove with
 
-```zsh
+```bash
+# Remove composer things
 rm -rf vendor/ composer* .phpstan.neon .vscode/tasks.json
+# Remove docker things
+rm docker-compose.yml Caddyfile
 ```
 
 and remove the autoloader from the `index.php` file.

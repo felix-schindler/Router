@@ -1,0 +1,8 @@
+:80 {
+	root * /srv
+	encode gzip zstd
+	php_fastcgi php-fpm:9000
+	file_server
+	# Force route through index.php
+	try_files {path} /index.php{path}
+}
