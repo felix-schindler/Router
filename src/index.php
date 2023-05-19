@@ -24,6 +24,10 @@ const DB_PASS = 'pass';
 const DOMAIN = 'https://schindlerfelix.de';			// Hosted on this domain
 const TITLE = 'sample';													// Title of project
 
+// Class loader cache
+const CACHE_VERSION = 1; // Version class loader of the cache
+define('CACHE_PATH', sys_get_temp_dir() . '/class_loader-' . CACHE_VERSION . '.cache');
+
 // Require autoloaders
 require_once('./core/ClassLoader.php');					// Load classes
 
