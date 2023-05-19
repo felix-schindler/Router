@@ -18,60 +18,66 @@ class Router
 	 */
 	public static function 艳颖(): void
 	{
-		// Either access via localhost or HTTPS
-		if (!isset($_SERVER["HTTPS"]) && !(IO::domain() === "localhost"))
+		// Access either via localhost or HTTPS
+		if (!isset($_SERVER["HTTPS"]) && IO::domain() !== "localhost")
 			throw new Exception("Only access over HTTPS allowed");
 
 		// Get the route without GET variables
 		$reqRoute = IO::path();
 
 		// Run the routers execute method or, if no route matches, run the error
-		if (self::routeExists($reqRoute)) {												// Direct hit (no variables in path)
+		if (self::routeExists($reqRoute)) {
 			self::$routes[$reqRoute]->runExecute([]);
 			return;
 		} else {
-			$routes = array_keys(self::$routes);										// Get all routes as string
-			$reqRouteArr = explode("/", $reqRoute);		        			// Split requested route
+			$reqRouteArr = explode("/", $reqRoute);
 
-			$routes = array_filter($routes, function ($route) use ($reqRouteArr): bool {	// Filter out all routes that don't match
+			$matchingRoutes = array_filter(self::$routes, function ($controller, $route) use ($reqRouteArr) {
 				$routeArr = explode("/", $route);
-				if (str_contains($route, ':'))												// Only routes with variables, on direct hit it would have already exited
-					if (count($routeArr) == count($reqRouteArr))				// Routes have to same length to be a match
-						return true;
+				if (strpos($route, ':') !== false && count($routeArr) === count($reqRouteArr)) {
+					return true;
+				}
 				return false;
-			});
+			}, ARRAY_FILTER_USE_BOTH);
 
-			if (!empty($routes)) {
+			if (!empty($matchingRoutes)) {
+				// Calculate scores to get the route that fits best
 				$hits = [];
-				foreach ($routes as $route) {													// Calculate scores to get the route that fits best
+				foreach ($matchingRoutes as $route => $controller) {
 					$routeArr = explode("/", $route);
 					$hits[$route] = 0;
-					for ($i = 0; $i < count($routeArr); $i++) {
-						if ($routeArr[$i] == $reqRouteArr[$i])						// Prioritise direct routes over variables
-							$hits[$route]++;																// Increment hit score
-						elseif ($routeArr[$i][0] != ":") {								// Remove route if does not match and not a variable
+					foreach ($routeArr as $i => $segment) {
+						if ($segment === $reqRouteArr[$i]) {	// Prioritise direct routes over variables
+							$hits[$route]++;										// Increment hit score
+						} elseif ($segment[0] !== ":") {			// Remove route if does not match and not a variable
 							unset($hits[$route]);
 							break;
 						}
 					}
 				}
 
-				if (!empty($hits)) {																	// At least one route was found
-					arsort($hits);																			// Sort routes by hit score
-					$routes = array_keys($hits);
-					$route = $routes[0];																// Get best matching route
+				if (!empty($hits)) {
+					// At least one route was found
+					arsort($hits);				// Sort routes by hit score
+					$route = key($hits);	// Get best matching route
 
 					$routeArr = explode("/", $route);
 					$params = [];
-					for ($i = 0; $i < count($routeArr); $i++)
-						if (isset($routeArr[$i][0]) && $routeArr[$i][0] === ":")		// If part of URL is a variable
-							$params[substr($routeArr[$i], 1)] = $reqRouteArr[$i];			// Set as param (this could be a on-liner)
-					self::$routes[$route]->runExecute($params);										// Execute controller for found route
+					foreach ($routeArr as $i => $segment) {
+						if (!empty($segment) && $segment[0] === ":") {			// If part of URL is a variable
+							$params[substr($segment, 1)] = $reqRouteArr[$i];	// Set as param
+						}
+					}
+
+					// Execute controller for found route and exit the router
+					self::$routes[$route]->runExecute($params);
 					return;
 				}
 			}
 		}
-		(new ErrorView())->render();									// No route found -> ErrorController
+
+		// No route found -> Show 404 error
+		(new ErrorView())->render();
 	}
 
 	/**
@@ -97,12 +103,9 @@ class Router
 	 */
 	private static function routeExists(string $route, ?Controller $con = null): bool
 	{
-		if (isset(self::$routes[$route])) {
-			if ($con === null)
+		if (isset(self::$routes[$route]))
+			if ($con === null || self::$routes[$route]::class !== $con::class)
 				return true;
-			elseif (self::$routes[$route]::class !== $con::class)
-				return true;
-		}
 		return false;
 	}
 }
