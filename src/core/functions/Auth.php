@@ -6,6 +6,22 @@
 class Auth
 {
 	/**
+	 * Check whether user credentials are correct or not (e. g. for login)
+	 *
+	 * @param string $user E-Mail / Username or however you want to identify your user
+	 * @param string $password Password of the user
+	 * @return boolean correct ? true : false
+   */
+	public static function checkUserCredentials(string $user, #[SensitiveParameter] string $password): bool {
+		$q = new Query("SELECT `password` FROM `User` WHERE `username`=:user;", [":user" => $user]);
+		if ($q->count() === 1 && ($user = $q->fetch()) !== null) {
+			return password_verify($password, $user['password']);
+		}
+
+		return false;
+	}
+
+	/**
 	 * Checks whether the token is valid or not
 	 *
 	 * @param string|null $token The auth (bearer) token
