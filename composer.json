@@ -3,7 +3,7 @@
 		"dev": "php -S localhost:8080 -t src/",
 		"test": "composer run test:static && composer run test:unit",
 		"test:unit": "php vendor/bin/phpunit tests/",
-		"test:static": "php vendor/bin/phpstan analyse -c .phpstan.neon --memory-limit 500M"
+		"test:static": "php vendor/bin/phpstan analyse -c .phpstan.neon"
 	},
 	"autoload": {
 		"classmap": [
