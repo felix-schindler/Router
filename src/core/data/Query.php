@@ -5,7 +5,7 @@ class Query
 	/**
 	 * @var PDO Connection to database
 	 */
-	private PDO $con;
+	private Database $con;
 
 	/**
 	 * @var string Query string
@@ -43,7 +43,7 @@ class Query
 	{
 		$this->queryStr = $queryStr;
 		$this->values = $values;
-		$this->con = new PDO('mysql:host=' . DB_HOST . '; dbname=' . DB_NAME, DB_USER, DB_PASS);
+		$this->con = new Database();
 	}
 
 	/**
