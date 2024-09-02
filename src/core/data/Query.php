@@ -3,7 +3,7 @@
 class Query
 {
 	/**
-	 * @var PDO Connection to database
+	 * @var Database Connection to database
 	 */
 	private Database $con;
 
