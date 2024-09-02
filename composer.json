@@ -1,4 +1,6 @@
 {
+	"$schema": "https://getcomposer.org/schema.json",
+	"version": "2.1.0",
 	"scripts": {
 		"dev": "php -S localhost:8080 -t src/",
 		"test": "composer run test:static && composer run test:unit",
