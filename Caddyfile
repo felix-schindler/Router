@@ -1,8 +1,15 @@
+{
+	frankenphp
+}
+
+# The domain name of your server
 :80 {
-	root * /srv
-	encode gzip zstd
-	php_fastcgi php-fpm:9000
-	file_server
-	# Force route through index.php
-	try_files {path} /index.php{path}
+	# Set the webroot to the public/ directory
+	root * /srv/src
+
+	# Enable compression (optional)
+	encode zstd br gzip
+
+	# Execute PHP files from the public/ directory and serve assets
+	php_server
 }

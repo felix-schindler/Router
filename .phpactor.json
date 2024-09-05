@@ -1,0 +1,4 @@
+{
+	"$schema": "https://gist.githubusercontent.com/montchr/59fc36b090597960be9ac5d01e425320/raw/c163933d93a1707fd815886d2a339aaec946d06b/schema.json",
+	"language_server_phpstan.enabled": true
+}
