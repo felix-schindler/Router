@@ -47,8 +47,9 @@ class Database extends PDO
 	public function fetch(): ?array
 	{
 		$this->query->setFetchMode(PDO::FETCH_ASSOC);	// Fetch into array
-		if (($result = $this->query->fetch()) !== false)
+		if (($result = $this->query->fetch()) !== false) {
 			return $result;
+		}
 		return null;
 	}
 

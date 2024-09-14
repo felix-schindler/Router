@@ -56,10 +56,11 @@ abstract class View
 	public function renderChildren(?string $element = null): void
 	{
 		foreach ($this->children as $child) {
-			if ($element === null)
+			if ($element === null) {
 				$child->render();
-			else
+			} else {
 				echo "<$element>{$child->__toString()}</$element>";
+			}
 		}
 	}
 
@@ -70,8 +71,9 @@ abstract class View
 	{
 		ob_start();
 		$this->render();
-		if (($content = ob_get_clean()) !== false)
+		if (($content = ob_get_clean()) !== false) {
 			return $content;
+		}
 		return '';
 	}
 }

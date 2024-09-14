@@ -4,7 +4,7 @@ class LayoutView extends View
 {
 	public function render(): void
 	{
-?>
+		?>
 		<!DOCTYPE html>
 		<html lang="en">
 
@@ -70,9 +70,9 @@ class LayoutView extends View
 
 			<footer>
 				<?php
-				$executionTime = (microtime(true) - $GLOBALS['start']) * 1000;
-				$timeSinceReq = ($GLOBALS['start'] - $_SERVER['REQUEST_TIME_FLOAT']) * 1000
-				?>
+						$executionTime = (microtime(true) - $GLOBALS['start']) * 1000;
+		$timeSinceReq = ($GLOBALS['start'] - $_SERVER['REQUEST_TIME_FLOAT']) * 1000
+		?>
 				<p>generated in <?= number_format($executionTime, 2) ?> ms ; server ate <?= number_format($timeSinceReq, 2) ?> ms</p>
 			</footer>
 		</body>

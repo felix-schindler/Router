@@ -17,11 +17,13 @@ class IO
 	 */
 	public static function query(string $var): string | array | null
 	{
-		if (isset($_GET[$var]))
-			if (is_string($_GET[$var]))
+		if (isset($_GET[$var])) {
+			if (is_string($_GET[$var])) {
 				return htmlspecialchars(urldecode($_GET[$var]));
-			elseif (is_array($_GET[$var]))
+			} elseif (is_array($_GET[$var])) {
 				return $_GET[$var];
+			}
+		}
 		return null;
 	}
 
@@ -40,17 +42,19 @@ class IO
 		if ($_SERVER['CONTENT_TYPE'] == 'application/json' || $_SERVER['HTTP_CONTENT_TYPE'] == 'application/json') {
 			if (($input = file_get_contents('php://input')) !== false) {
 				if (($json = json_decode($input, true)) !== null && isset($json[$var])) {
-					if (is_string($json[$var]))
+					if (is_string($json[$var])) {
 						return htmlspecialchars($json[$var]);
-					elseif (is_array($json[$var]))
+					} elseif (is_array($json[$var])) {
 						return $json[$var];
+					}
 				}
 			}
 		} elseif (isset($_POST[$var])) {
-			if (is_string($_POST[$var]))
+			if (is_string($_POST[$var])) {
 				return htmlspecialchars(urldecode($_POST[$var]));
-			elseif (is_array($_POST[$var]))
+			} elseif (is_array($_POST[$var])) {
 				return $_POST[$var];
+			}
 		}
 
 		return null;
@@ -68,16 +72,19 @@ class IO
 	 */
 	public static function SESSION(string $var, string $value = null): ?string
 	{
-		if (session_status() !== PHP_SESSION_ACTIVE)
+		if (session_status() !== PHP_SESSION_ACTIVE) {
 			throw new Exception('You have to start the session first');
+		}
 
 		// Set variable
-		if ($value !== null)
+		if ($value !== null) {
 			$_SESSION[$var] = $value;
+		}
 
 		// Return variable
-		else if (isset($_SESSION[$var]) && is_string($_SESSION[$var]))
+		elseif (isset($_SESSION[$var]) && is_string($_SESSION[$var])) {
 			return htmlspecialchars($_SESSION[$var]);
+		}
 
 		return null;
 	}
@@ -95,7 +102,7 @@ class IO
 	{
 		if ($value !== null) {
 			setcookie($var, $value, time() + $lifetime, '/', self::domain(), true);
-		} else if (isset($_COOKIE[$var]) && is_string($_COOKIE[$var])) {
+		} elseif (isset($_COOKIE[$var]) && is_string($_COOKIE[$var])) {
 			return htmlspecialchars($_COOKIE[$var]);
 		}
 
@@ -109,10 +116,11 @@ class IO
 	 */
 	public static function authHeader(): ?string
 	{
-		if (isset($_SERVER['Authorization']))					// "Normal"
+		if (isset($_SERVER['Authorization'])) {					// "Normal"
 			return trim($_SERVER['Authorization']);
-		elseif (isset($_SERVER['HTTP_AUTHORIZATION']))		// Nginx or fast CGI
+		} elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {		// Nginx or fast CGI
 			return trim($_SERVER['HTTP_AUTHORIZATION']);
+		}
 		return null;
 	}
 
@@ -122,8 +130,9 @@ class IO
 	 */
 	public static function domain(): string
 	{
-		if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] != null)
+		if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] != null) {
 			return $_SERVER['SERVER_NAME'];
+		}
 		throw new Exception('Not running on a server');
 	}
 
@@ -133,8 +142,9 @@ class IO
 	 */
 	public static function path(): string
 	{
-		if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] != null)
+		if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] != null) {
 			return explode('?', $_SERVER['REQUEST_URI'], 2)[0];
+		}
 		throw new Exception('No request');
 	}
 
@@ -152,8 +162,9 @@ class IO
 	 */
 	public static function method(): string
 	{
-		if (isset($_SERVER['REQUEST_METHOD']))
+		if (isset($_SERVER['REQUEST_METHOD'])) {
 			return $_SERVER['REQUEST_METHOD'];
+		}
 		throw new Exception('No request method set');
 	}
 
@@ -163,8 +174,9 @@ class IO
 	 */
 	public static function accept(): string
 	{
-		if (isset($_SERVER['HTTP_ACCEPT']))
+		if (isset($_SERVER['HTTP_ACCEPT'])) {
 			return explode(',', $_SERVER['HTTP_ACCEPT'])[0];
+		}
 		throw new Exception('No accept header set');
 	}
 }

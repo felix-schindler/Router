@@ -38,8 +38,9 @@ abstract class Controller
 	 */
 	public function initRoutes(): void
 	{
-		foreach ($this->paths as $path)
+		foreach ($this->paths as $path) {
 			Router::addRoute($path, $this);
+		}
 	}
 
 	/**
@@ -71,8 +72,9 @@ abstract class Controller
 	 */
 	protected function param(string $var): ?string
 	{
-		if (isset($this->params[$var]))
+		if (isset($this->params[$var])) {
 			return htmlspecialchars(urldecode(strval($this->params[$var])));
+		}
 		return null;
 	}
 
@@ -98,15 +100,21 @@ abstract class Controller
 	{
 		$method = IO::method();
 		header('Access-Control-Allow-Methods: ' . implode(', ', array_merge(['OPTIONS', 'HEAD'], $this->methods)));
-		if (empty(array_intersect(['*', 'OPTIONS', 'HEAD', $method], $this->methods)))
+		if (empty(array_intersect(['*', 'OPTIONS', 'HEAD', $method], $this->methods))) {
 			return 405;
-		if ($this->userRequired)
-			if (!Auth::validateToken())
+		}
+		if ($this->userRequired) {
+			if (!Auth::validateToken()) {
 				return 401;
-		if (!in_array($method, ['GET', 'HEAD', 'DELETE', 'OPTIONS']))
-			foreach ($this->reqVar[$method] as $var)
-				if (IO::body($var) === null)
+			}
+		}
+		if (!in_array($method, ['GET', 'HEAD', 'DELETE', 'OPTIONS'])) {
+			foreach ($this->reqVar[$method] as $var) {
+				if (IO::body($var) === null) {
 					return 400;
+				}
+			}
+		}
 		return 200;
 	}
 }

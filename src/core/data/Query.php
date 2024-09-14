@@ -74,15 +74,17 @@ class Query
 	 */
 	public function lastInsertId(string $name = null): int|string
 	{
-		if (!$this->run)
+		if (!$this->run) {
 			$this->execute();
+		}
 		if ($this->success) {
 			$id = $this->con->lastInsertId($name);
 			if ($id !== false) {
-				if (is_numeric($id))
+				if (is_numeric($id)) {
 					return intval($id);
-				else
+				} else {
 					return $id;
+				}
 			}
 		}
 		return 0;
@@ -97,13 +99,19 @@ class Query
 	 */
 	public function fetch(Model $model = null): mixed
 	{
-		if (!$this->run)
+		if (!$this->run) {
 			$this->execute();
+		}
 		if ($this->success) {
-			if ($model !== null)	$this->stmt->setFetchMode(PDO::FETCH_INTO, $model);	// Fetch into a given model class
-			else									$this->stmt->setFetchMode(PDO::FETCH_ASSOC);				// Fetch into an array
-			if (($result = $this->stmt->fetch()) !== false)
-				return $result;															// Return result (when query was successful)
+			if ($model !== null) {
+				$this->stmt->setFetchMode(PDO::FETCH_INTO, $model);
+			}	// Fetch into a given model class
+			else {
+				$this->stmt->setFetchMode(PDO::FETCH_ASSOC);
+			}				// Fetch into an array
+			if (($result = $this->stmt->fetch()) !== false) {
+				return $result;
+			}															// Return result (when query was successful)
 		}
 		return null;																		// Fetch or query failed
 	}
@@ -116,11 +124,14 @@ class Query
 	 */
 	public function fetchAll(): ?array
 	{
-		if (!$this->run)
+		if (!$this->run) {
 			$this->execute();
-		if ($this->success)
-			if (($result = $this->stmt->fetchAll(PDO::FETCH_ASSOC)) !== false)
+		}
+		if ($this->success) {
+			if (($result = $this->stmt->fetchAll(PDO::FETCH_ASSOC)) !== false) {
 				return $result;
+			}
+		}
 		return null;
 	}
 
@@ -143,8 +154,9 @@ class Query
 	 */
 	public function count(): int
 	{
-		if (!$this->run)
+		if (!$this->run) {
 			$this->execute();
+		}
 		return $this->stmt->rowCount();
 	}
 
@@ -153,8 +165,9 @@ class Query
 	 */
 	public function success(): bool
 	{
-		if (!$this->run)
+		if (!$this->run) {
 			$this->execute();
+		}
 		return $this->success;
 	}
 }

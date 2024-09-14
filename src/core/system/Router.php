@@ -19,8 +19,9 @@ class Router
 	public static function 艳颖(): void
 	{
 		// Access either via localhost or HTTPS
-		if (!isset($_SERVER["HTTPS"]) && IO::domain() !== "localhost")
+		if (!isset($_SERVER["HTTPS"]) && IO::domain() !== "localhost") {
 			throw new Exception("Only access over HTTPS allowed");
+		}
 
 		// Get the route without GET variables
 		$reqRoute = IO::path();
@@ -89,8 +90,9 @@ class Router
 	 */
 	public static function addRoute(string $route, Controller $con): void
 	{
-		if (self::routeExists($route, $con))
+		if (self::routeExists($route, $con)) {
 			throw new Exception("Route " . $route . " already used for " . self::$routes[$route]::class);
+		}
 		self::$routes[$route] = $con;
 	}
 
@@ -103,9 +105,11 @@ class Router
 	 */
 	private static function routeExists(string $route, ?Controller $con = null): bool
 	{
-		if (isset(self::$routes[$route]))
-			if ($con === null || self::$routes[$route]::class !== $con::class)
+		if (isset(self::$routes[$route])) {
+			if ($con === null || self::$routes[$route]::class !== $con::class) {
 				return true;
+			}
+		}
 		return false;
 	}
 }

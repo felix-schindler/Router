@@ -10,8 +10,9 @@ class NotCalledController extends Controller
 		$layout->addChild(new HeadingView('Doesn\'t get called when only using links from the LayoutView'));
 		$layout->addChild(new TextView('Go and work on the Router!'));
 		$layout->addChild(new TextView($this->param('type') ?? 'null'));
-		if (($id = $this->param('id')) !== null)
+		if (($id = $this->param('id')) !== null) {
 			$layout->addChild(new TextView("ID: {$id}"));
+		}
 
 		return $layout;
 	}

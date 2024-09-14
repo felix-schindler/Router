@@ -12,7 +12,8 @@ class Auth
 	 * @param string $password Password of the user
 	 * @return boolean correct ? true : false
    */
-	public static function checkUserCredentials(string $user, #[SensitiveParameter] string $password): bool {
+	public static function checkUserCredentials(string $user, #[SensitiveParameter] string $password): bool
+	{
 		$q = new Query("SELECT `password` FROM `User` WHERE `username`=:user;", [":user" => $user]);
 		if ($q->count() === 1 && ($user = $q->fetch()) !== null) {
 			return password_verify($password, $user['password']);
@@ -68,8 +69,9 @@ class Auth
 		if (($token = IO::authHeader()) != null) {
 			if (($decoded = base64_decode($token)) !== false) {
 				$decToken = explode(".", $decoded);
-				if (($uuid = base64_decode($decToken[0])) !== false)
+				if (($uuid = base64_decode($decToken[0])) !== false) {
 					return $uuid;
+				}
 			}
 		}
 		return null;
