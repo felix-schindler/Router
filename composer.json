@@ -2,7 +2,7 @@
 	"$schema": "https://getcomposer.org/schema.json",
 	"version": "2.1.0",
 	"scripts": {
-		"dev": "php -S localhost:8080 -t src/",
+		"dev": ["Composer\\Config::disableProcessTimeout", "php -S localhost:8080 -t src/"],
 		"fmt": "php vendor/bin/php-cs-fixer fix",
 		"test": "composer run test:static && composer run test:unit",
 		"test:unit": "php vendor/bin/phpunit tests/",
