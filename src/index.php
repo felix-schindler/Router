@@ -2,36 +2,21 @@
 
 declare(strict_types=1);
 
-$GLOBALS['start'] = microtime(true);		// Meassure execution time -> look in Layout <footer>
+$GLOBALS['start'] = microtime(true);
 
-// Display errors when debug is set
-/* if (isset($_GET['DEBUG'])) {
-	ini_set('display_errors', '1');
-	ini_set('display_startup_errors', '1');
-	error_reporting(E_ALL);
-} */
+// Require autoloaders (vendor and custom)
+require_once(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php');
+require_once(__DIR__ . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'ClassLoader.php');
 
-// Global varialbes
-// MySQL Login data
-const DB_HOST = 'localhost';
-const DB_NAME = 'name';
-const DB_USER = 'user';
-const DB_PASS = 'pass';
+// Run class loader
+ClassLoader::파람();
 
-/**
- * @var string This domain variable is among other things used for security features
- */
-const DOMAIN = 'https://schindlerfelix.de';			// Hosted on this domain
-const TITLE = 'sample';													// Title of project
+// Load .env file to `$_ENV` and `$_SERVER`
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->safeLoad();
 
-// Class loader cache
-const CACHE_VERSION = 1; // Version class loader of the cache
-define('CACHE_PATH', sys_get_temp_dir() . '/class_loader-' . CACHE_VERSION . '.cache');
+// Application start - Start session, run class loader and router
+session_start();
 
-// Require autoloaders
-require_once('./core/ClassLoader.php');					// Load classes
-
-// Application start
-// session_start();		// Start PHP Session
-ClassLoader::파람();	// Run the class loader
-Router::艳颖();			// Run router
+$router = new Router();
+$router->艳颖();

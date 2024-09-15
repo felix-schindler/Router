@@ -19,7 +19,7 @@ class Database extends PDO
 	 */
 	public function __construct()
 	{
-		parent::__construct('mysql:host=' . DB_HOST . '; dbname=' . DB_NAME, DB_USER, DB_PASS);
+		parent::__construct('mysql:host=' . $_ENV["DB_HOST"] . '; dbname=' . $_ENV["DB_NAME"], $_ENV["DB_USER"], $_ENV["DB_PASS"]);
 	}
 
 	/**

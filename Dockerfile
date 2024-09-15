@@ -1,5 +1,12 @@
 FROM dunglas/frankenphp:1-alpine
 
+RUN install-php-extensions \
+	pdo \
+	pdo_mysql \
+	json \
+	mbstring \
+	opcache
+
 # Setup production environment
 RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 

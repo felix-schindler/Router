@@ -2,7 +2,10 @@
 	"$schema": "https://getcomposer.org/schema.json",
 	"version": "2.1.0",
 	"scripts": {
-		"dev": ["Composer\\Config::disableProcessTimeout", "php -S localhost:8080 -t src/"],
+		"dev": [
+			"Composer\\Config::disableProcessTimeout",
+			"php -S localhost:8080 -t src/"
+		],
 		"fmt": "php vendor/bin/php-cs-fixer fix",
 		"test": "composer run test:static && composer run test:unit",
 		"test:unit": "php vendor/bin/phpunit tests/",
@@ -10,14 +13,16 @@
 	},
 	"autoload": {
 		"classmap": [
-			"src"
+			"src/lib"
 		]
 	},
 	"require": {
 		"php": "^8.3",
 		"ext-pdo": "*",
 		"ext-json": "*",
-		"ext-mbstring": "*"
+		"ext-mbstring": "*",
+		"monolog/monolog": "^3.7",
+		"vlucas/phpdotenv": "^5.6"
 	},
 	"require-dev": {
 		"phpstan/phpstan": "^1.12",
