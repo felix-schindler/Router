@@ -39,7 +39,13 @@ class IO
 	 */
 	public static function body(string $var): string | array | null
 	{
-		if ($_SERVER['CONTENT_TYPE'] == 'application/json' || $_SERVER['HTTP_CONTENT_TYPE'] == 'application/json') {
+		if (isset($_POST[$var])) {
+			if (is_string($_POST[$var])) {
+				return htmlspecialchars(urldecode($_POST[$var]));
+			} elseif (is_array($_POST[$var])) {
+				return $_POST[$var];
+			}
+		} elseif ($_SERVER['CONTENT_TYPE'] == 'application/json' || $_SERVER['HTTP_CONTENT_TYPE'] == 'application/json') {
 			if (($input = file_get_contents('php://input')) !== false) {
 				if (($json = json_decode($input, true)) !== null && isset($json[$var])) {
 					if (is_string($json[$var])) {
@@ -48,12 +54,6 @@ class IO
 						return $json[$var];
 					}
 				}
-			}
-		} elseif (isset($_POST[$var])) {
-			if (is_string($_POST[$var])) {
-				return htmlspecialchars(urldecode($_POST[$var]));
-			} elseif (is_array($_POST[$var])) {
-				return $_POST[$var];
 			}
 		}
 
@@ -116,9 +116,9 @@ class IO
 	 */
 	public static function authHeader(): ?string
 	{
-		if (isset($_SERVER['Authorization'])) {					// "Normal"
+		if (isset($_SERVER['Authorization'])) {              // "Normal"
 			return trim($_SERVER['Authorization']);
-		} elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {		// Nginx or fast CGI
+		} elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {   // Nginx or fast CGI
 			return trim($_SERVER['HTTP_AUTHORIZATION']);
 		}
 		return null;

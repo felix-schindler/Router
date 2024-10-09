@@ -3,16 +3,26 @@
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
+readonly class PageProps
+{
+	/**
+	 * @param array<string,string|string[]> $params
+	 */
+	public function __construct(
+		public array $params,
+	) {}
+}
+
 /**
  * The router, this is where everything is coming to life
  */
-class Router
+readonly class Router
 {
 	/**
 	 * @param Logger $logger Default logger for this class
 	 */
 	public function __construct(
-		private $logger = new Logger("Router")
+		private Logger $logger = new Logger("Router"),
 	) {
 		$stream_handler = new StreamHandler("php://stdout");
 		$logger->pushHandler($stream_handler);

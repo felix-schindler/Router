@@ -1,6 +1,6 @@
 <?php
 /**
- * @param null $data
+ * @param mixed $data
  * @return void
  */
 function render($data): void

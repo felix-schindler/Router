@@ -1,50 +1,30 @@
 <?php
 
-/**
- * @param null $props
- * @return void
- */
-function GET($props): void
+function GET(PageProps $props): void
 {
 	// TODO: this should be JSON
 	echo "This should be JSON content!";
 }
 
-/**
- * @param null $props
- * @return void
- */
-function POST($props): void
+function POST(PageProps $props): void
 {
 	// TODO: this should be JSON
 	echo "This is the API!";
 }
 
-/**
- * @param null $props
- * @return void
- */
-function PUT($props): void
+function PUT(PageProps $props): void
 {
 	// TODO: this should be JSON
 	echo "This should be JSON content!";
 }
 
-/**
- * @param null $props
- * @return void
- */
-function PATCH($props): void
+function PATCH(PageProps $props): void
 {
 	// TODO: this should be JSON
 	echo "This should be JSON content!";
 }
 
-/**
- * @param null $props
- * @return void
- */
-function DELETE($props): void
+function DELETE(PageProps $props): void
 {
 	// TODO: this should be JSON
 	echo "This should be JSON content!";
