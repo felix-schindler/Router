@@ -1,6 +1,6 @@
 {
 	"$schema": "https://getcomposer.org/schema.json",
-	"version": "2.1.0",
+	"version": "2.1.2",
 	"scripts": {
 		"dev": "php -S localhost:8080 -t src/",
 		"fmt": "php vendor/bin/php-cs-fixer fix",
@@ -14,7 +14,7 @@
 		]
 	},
 	"require": {
-		"php": "^8.3",
+		"php": "^8.1",
 		"ext-pdo": "*",
 		"ext-json": "*",
 		"ext-mbstring": "*"

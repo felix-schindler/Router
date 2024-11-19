@@ -11,7 +11,7 @@ class Auth
 	 * @param string $user E-Mail / Username or however you want to identify your user
 	 * @param string $password Password of the user
 	 * @return boolean correct ? true : false
-   */
+	 */
 	public static function checkUserCredentials(string $user, #[SensitiveParameter] string $password): bool
 	{
 		$q = new Query("SELECT `password` FROM `User` WHERE `username`=:user;", [":user" => $user]);
@@ -35,10 +35,10 @@ class Auth
 				return false;
 			}
 		}
-		if (($decoded = base64_decode($token)) !== false) {
+		if (($decoded = base64_decode($token, true)) !== false) {
 			$decToken = explode(".", $decoded);
 			if (count($decToken) === 3) {
-				if (($uuid = base64_decode($decToken[0])) && ($passHash = base64_decode($decToken[1])) && ($validUntil = base64_decode($decToken[2]))) {
+				if (($uuid = base64_decode($decToken[0], true)) && ($passHash = base64_decode($decToken[1], true)) && ($validUntil = base64_decode($decToken[2], true))) {
 					try {
 						$dayDiff = (new DateTime())->diff(new DateTime($validUntil))->format('%r%a');
 
@@ -67,9 +67,9 @@ class Auth
 	public static function tokenUuid(): ?string
 	{
 		if (($token = IO::authHeader()) != null) {
-			if (($decoded = base64_decode($token)) !== false) {
+			if (($decoded = base64_decode($token, true)) !== false) {
 				$decToken = explode(".", $decoded);
-				if (($uuid = base64_decode($decToken[0])) !== false) {
+				if (($uuid = base64_decode($decToken[0], true)) !== false) {
 					return $uuid;
 				}
 			}

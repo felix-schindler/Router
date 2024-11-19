@@ -45,6 +45,7 @@ class ClassLoader
 		$phpFiles = new RegexIterator($iterator, '/\.php$/');
 
 		foreach ($phpFiles as $file) {
+			assert($file instanceof SplFileInfo);
 			$filePath = $file->getPathname();
 			$className = basename($filePath, '.php');
 			self::$classes[$className] = $filePath;
