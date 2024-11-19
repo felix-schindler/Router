@@ -128,9 +128,7 @@ class Query
 			$this->execute();
 		}
 		if ($this->success) {
-			if (($result = $this->stmt->fetchAll(PDO::FETCH_ASSOC)) !== false) {
-				return $result;
-			}
+			return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
 		}
 		return null;
 	}
